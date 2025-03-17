@@ -4,7 +4,7 @@ import {ManageProductsClientProps, Product} from "@/UI/products/types/types";
 import {DataGrid, GridColDef} from "@mui/x-data-grid"
 // import {formatPrice} from "@/utils/functions/formatPrice";
 import Heading from "@/UI/Headings/components/Heading";
-import { MdCached, MdClose, MdDelete, MdDone, MdRemoveRedEye } from "react-icons/md";
+import { MdCached, MdClose, MdDelete, MdDone, MdModeEdit, MdRemoveRedEye } from "react-icons/md";
 import Status from "@/UI/products/components/Status";
 import ActionButton from "@/UI/products/components/ActionButton";
 import toast from "react-hot-toast";
@@ -90,10 +90,11 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({products}) =
             }},
         {field: 'actions', headerName: "Actions", width: 180, align: "center", headerAlign: "center" ,renderCell: (params) => {
             return (
-                <div className="flex w-full justify-between gap-4">
+                <div className="flex w-full justify-center items-center text-center gap-1 m-2">
                     <ActionButton icon={MdCached} onClick={() => {handleChangeStock(params.row.id)}}/>
                     <ActionButton icon={MdDelete} onClick={() => {handleDelete(params.row.id)}}/>
                     <ActionButton icon={MdRemoveRedEye} onClick={() => {router.push(`/product/${params.row.id}`)}}/>
+                    <ActionButton icon={MdModeEdit} onClick={() => {router.push(`/admin/edit-product/${params.row.id}`)}}/>
                 </div>
             );
             }
