@@ -51,10 +51,6 @@ const ProductPage = ( ) => {
         <div className = "p-8">
             <Container>
                 <ProductDetails id={prod.id} name={prod.name} description={prod.description} price={prod.price} brand={prod.brand} category={prod.category} inStock={prod.inStock} image={prod.image}/>
-                <div className = { "flex flex-col mt-20 gap-4" }>
-                    {/* <div>add rating</div>
-                    <ListRating product = { productItem }/> */}
-                </div>
             </Container>
         </div>
     )

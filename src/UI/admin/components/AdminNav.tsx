@@ -15,16 +15,16 @@ const AdminNav = () => {
             <Container>
 
                 <div className="flex flex-row justify-between items-center md:justify-center gap-8 md:gap-12 overflow-x-auto flex-nowrap">
-                    <Link href='../admin'>
+                    <Link href='/admin'>
                         <AdminNavItem icon={MdDashboard} label={"Summary"} selected={pathname === "/admin"}/>
                     </Link>
-                    <Link href='../admin/add-products'>
+                    <Link href='/admin/add-products'>
                         <AdminNavItem icon={MdLibraryAdd} label={"Add Products"} selected={pathname === "/admin/add-products"}/>
                     </Link>
-                    <Link href='../admin/manage-products'>
+                    <Link href='/admin/manage-products'>
                         <AdminNavItem icon={MdDns} label={"Manage Products"} selected={pathname === "/admin/manage-products"}/>
                     </Link>
-                    <Link href='../admin/manage-orders'>
+                    <Link href='/admin/manage-orders'>
                         <AdminNavItem icon={MdFormatListBulleted} label={"Orders"} selected={pathname === "/admin/manage-orders"}/>
                     </Link>
                 </div>

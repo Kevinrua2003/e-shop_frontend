@@ -93,7 +93,7 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({products}) =
                 <div className="flex w-full justify-center items-center text-center gap-1 m-2">
                     <ActionButton icon={MdCached} onClick={() => {handleChangeStock(params.row.id)}}/>
                     <ActionButton icon={MdDelete} onClick={() => {handleDelete(params.row.id)}}/>
-                    <ActionButton icon={MdRemoveRedEye} onClick={() => {router.push(`/product/${params.row.id}`)}}/>
+                    <ActionButton icon={MdRemoveRedEye} onClick={() => {router.push(`/admin/item-view/${params.row.id}`)}}/>
                     <ActionButton icon={MdModeEdit} onClick={() => {router.push(`/admin/edit-product/${params.row.id}`)}}/>
                 </div>
             );
