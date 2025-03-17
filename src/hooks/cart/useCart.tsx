@@ -139,7 +139,7 @@ export const CartContextProvider = ( props : CartContextProviderProps ) => {
           const order = {
             userId: user?.userId || '',
             amount: totalAmount,
-            status: 'pending',
+            status: 'complete',
             deliverStatus: 'pending',
           };
       
