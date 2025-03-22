@@ -4,5 +4,4 @@ export interface BackDropProps{
 
 export interface MenuItemProps{
     children: React.ReactNode;
-    onClick: () => void;
 }

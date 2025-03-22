@@ -10,7 +10,7 @@ import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { AiFillFileAdd } from 'react-icons/ai';
+import { MdUpdate } from 'react-icons/md';
 
 function EditProductPage() {
 
@@ -106,7 +106,9 @@ function EditProductPage() {
   return (
     <>
         <>
-      <Heading title={"Update Product"} center />
+      <div className='text-blue-800'>
+        <Heading title={"Update Product"} center />
+      </div>
       <div className='text-red-400'>If you leave any field uncompleted the product will keep its original value</div>
       <Input
         id="name"
@@ -140,12 +142,12 @@ function EditProductPage() {
       />
 
       <div className={"w-full font-medium items-center justify-center text-center"}>
-        <div className={"mb-2 font-semibold"}><hr />Select a Category</div>
+        <div className={"mb-2 font-semibold text-blue-900"}><hr />Select a Category</div>
         <div className={"grid grid-cols-2 md:grid-cols-3 max-h-[50vh] overflow-y-auto"}>
           {categories.map((item) => {
             if (item.label === "All") return null;
             return (
-              <div key={item.label}>
+              <div key={item.label} className='text-blue-900'>
                 <CategoryInput
                   onClick={(category) => setCustomValue("category", category)}
                   label={item.label}
@@ -159,7 +161,7 @@ function EditProductPage() {
       </div>
 
       <div className={"w-full font-medium items-center justify-center text-center"}>
-        <div className={"mb-2 font-semibold"}>
+        <div className={"mb-2 font-semibold text-blue-900"}>
           <hr />Image Link Here
         </div>
         <Input
@@ -175,7 +177,7 @@ function EditProductPage() {
         <hr />
         <Button
           label={isLoading ? "Loading..." : "Update"}
-          icon={AiFillFileAdd}
+          icon={MdUpdate}
           onClick={handleSubmit(onSubmit)}
         />
       </div>

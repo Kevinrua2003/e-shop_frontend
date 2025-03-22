@@ -1,63 +1,49 @@
-import React from 'react'
-import Container from "@/UI/container/components/Container";
-import FooterList from "@/UI/footer/components/FooterList";
-import LinkButton from "@/UI/buttons/components/LinkButton";
+import React from 'react';
 import LinkIcon from "@/UI/buttons/components/LinkIcon";
-import {MdFacebook} from "react-icons/md";
-import {AiFillInstagram, AiFillTwitterCircle, AiFillYoutube} from "react-icons/ai";
+import { MdFacebook } from "react-icons/md";
+import { AiFillInstagram, AiFillTwitterCircle, AiFillYoutube } from "react-icons/ai";
 
 const Footer = () => {
     return (
-        <footer className = { "bg-slate-700 bg-slate-200 text-sm mt-16" }>
-            <Container>
-                <div className = "flex flex-col md:flex-row justify-between pt-16 pb-8">
-                    <FooterList>
-                        <h3 className = { "text-slate-100 font-bold" }>Shop Categories</h3>
-                        <LinkButton link = { "#" } text = { "Phones" } className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "Laptops" } className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "Desktops" } className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "Watches" } className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "Tvs" } className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "Accessories" }
-                                    className = { "text-slate-100" }></LinkButton>
-                    </FooterList>
-                    <FooterList>
-                        <h3 className = { "text-slate-100 font-bold" }>Customer Services</h3>
-                        <LinkButton link = { "#" } text = { "Contact Us" }
-                                    className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "Shipping Policy" }
-                                    className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "Returns & Exchanges" }
-                                    className = { "text-slate-100" }></LinkButton>
-                        <LinkButton link = { "#" } text = { "FAQs" } className = { "text-slate-100" }></LinkButton>
-                    </FooterList>
-                    <FooterList>
-                        <h3 className = { "text-slate-100 font-bold" }>About Us</h3>
-                        <p className = { "text-slate-100" }>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Cupiditate delectus esse facere
-                            fugiat illo, impedit ipsa, iste iure non nostrum nulla rem repudiandae sequi sit totam
-                            veniam voluptate voluptatibus voluptatum.</p>
-                    </FooterList>
-                    <FooterList>
-                        <h3 className = { "text-slate-100 font-bold" }>Follow Us</h3>
-                        <div className = { "flex gap-2" }>
-                            <LinkIcon link = { "facebook.com" }>
-                                <MdFacebook size = { 24 } color = { "ddd" }/>
-                            </LinkIcon>
-                            <LinkIcon link = { "x.com" }>
-                                <AiFillTwitterCircle size = { 24 } color = { "ddd" }/>
-                            </LinkIcon>
-                            <LinkIcon link = { "instagram.com" }>
-                                <AiFillInstagram size = { 24 } color = { "ddd" }/>
-                            </LinkIcon>
-                            <LinkIcon link = { "youtube.com" }>
-                                <AiFillYoutube size = { 24 } color = { "ddd" }/>
-                            </LinkIcon>
-                        </div>
-                    </FooterList>
+        <footer className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-10 px-6 rounded-t-2xl shadow-xl">
+            <div className="max-w-6xl mx-auto flex flex-col items-center space-y-8">
+                
+                {/* Navegación */}
+                <nav className="flex flex-wrap justify-center gap-6 text-lg font-semibold tracking-wide">
+                    <a className="hover:text-yellow-300 transition-all duration-300 hover:underline" href="#">Home</a>
+                    <a className="hover:text-yellow-300 transition-all duration-300 hover:underline" href="#">About</a>
+                    <a className="hover:text-yellow-300 transition-all duration-300 hover:underline" href="#">Services</a>
+                    <a className="hover:text-yellow-300 transition-all duration-300 hover:underline" href="#">Media</a>
+                    <a className="hover:text-yellow-300 transition-all duration-300 hover:underline" href="#">Gallery</a>
+                    <a className="hover:text-yellow-300 transition-all duration-300 hover:underline" href="#">Contact</a>
+                </nav>
+
+                {/* Redes Sociales */}
+                <div className="flex justify-center space-x-6">
+                    <LinkIcon link={"https://facebook.com"}>
+                        <MdFacebook size={32} className="hover:scale-125 transition-transform duration-300 hover:text-blue-300" />
+                    </LinkIcon>
+                    <LinkIcon link={"https://x.com"}>
+                        <AiFillTwitterCircle size={32} className="hover:scale-125 transition-transform duration-300 hover:text-blue-300" />
+                    </LinkIcon>
+                    <LinkIcon link={"https://instagram.com"}>
+                        <AiFillInstagram size={32} className="hover:scale-125 transition-transform duration-300 hover:text-pink-400" />
+                    </LinkIcon>
+                    <LinkIcon link={"https://youtube.com"}>
+                        <AiFillYoutube size={32} className="hover:scale-125 transition-transform duration-300 hover:text-red-400" />
+                    </LinkIcon>
                 </div>
-            </Container>
+
+                {/* Línea divisoria */}
+                <div className="w-full border-t border-white/30"></div>
+
+                {/* Derechos de autor */}
+                <p className="text-center text-sm font-medium">
+                    &copy; 2025 <span className="font-bold text-yellow-300">Just Learning</span>. Made with <span className="text-red-400">&hearts;</span>
+                </p>
+            </div>
         </footer>
-    )
-}
-export default Footer
+    );
+};
+
+export default Footer;

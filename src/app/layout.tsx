@@ -6,6 +6,7 @@ import Footer from "@/UI/footer/components/Footer";
 import CartProvider from "@/providers/cart/components/CartProvider";
 import {Toaster} from 'react-hot-toast'
 import { AuthProvider } from "./auth/context/AuthContext";
+import { ProductsFilterProvider } from "@/hooks/products/useProductsFilter";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ['400', '700'] })
 
@@ -21,8 +22,8 @@ export default function RootLayout ( {
 }> ) {
 
     return (
-        <html lang = "en">
-        <body className = { `${ poppins.className } antialiased text-slate-700` }>
+      <html lang="en" className={poppins.className}>
+        <body className="antialiased text-slate-700">
         <Toaster toastOptions = { {
             style: {
                 background: "rgb(51 65 85)",
@@ -31,11 +32,13 @@ export default function RootLayout ( {
         } }/>
         <AuthProvider>
           <CartProvider>
-            <div className="flex flex-col min-h-screen">
-              <NavBar />
-              <main className="flex-grow">{children}</main>
-              <Footer />
-            </div>
+            <ProductsFilterProvider>
+              <div className="flex flex-col min-h-screen">
+                <NavBar />
+                <main className="flex-grow">{children}</main>
+                <Footer />
+              </div>
+            </ProductsFilterProvider>
           </CartProvider>
         </AuthProvider>
         </body>

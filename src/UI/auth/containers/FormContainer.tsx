@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-const FormContainer = ( { children } : { children : React.ReactNode } ) => {
+const FormContainer = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className = "min-h-fit h-full flex items-center justify-center pb-12 pt-24">
-            <div
-                className = "max-w-[650px] w-full flex flex-col gap-6 items-center justify-center shadow-xl shadow-slate-200 rounded-md p-4 md:p-8">
-                { children }
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-purple-100 p-6">
+            <div className="max-w-[650px] w-full h-full flex flex-col gap-6 items-stretch justify-center bg-white shadow-2xl rounded-2xl p-6 md:p-10 border border-gray-200 transition-all duration-300">
+                {children}
             </div>
         </div>
-    )
-}
-export default FormContainer
+    );
+};
+
+export default FormContainer;

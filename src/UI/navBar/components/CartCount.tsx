@@ -9,10 +9,10 @@ const CartCount = () => {
     const router = useRouter();
     const { cartTotalQty } = useCart()
     return (
-        <div className = { "relative cursor-pointer" } onClick = { () => {
+        <div className = { "relative cursor-pointer hover:scale-105 transition-all duration-300" } onClick = { () => {
             router.push('/cart')
         } }>
-            <div className = { "text-3xl" }>
+            <div className = { "text-3xl text-white" }>
                 <CiShoppingCart/>
             </div>
             <span

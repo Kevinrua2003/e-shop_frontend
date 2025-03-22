@@ -1,9 +1,9 @@
 import {MenuItemProps} from "@/UI/navBar/types/types";
 
 
-const MenuItem: React.FC<MenuItemProps> = ({children, onClick}) => {
+const MenuItem: React.FC<MenuItemProps> = ({children}) => {
     return (
-        <div onClick={onClick} className={"px-4 py-3 hover:bg-neutral-100 transition"}>{children}</div>
+        <div className={"px-4 py-3 hover:bg-neutral-100 transition"}>{children}</div>
     );
 };
 

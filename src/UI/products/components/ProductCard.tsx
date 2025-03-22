@@ -1,36 +1,39 @@
 'use client'
 
 import React from 'react'
-import {Product} from "@/UI/products/types/types"
-import Image from "next/image";
-import {truncate} from "@/utils/functions/truncate";
-import {formatPrice} from "@/utils/functions/formatPrice";
-import {useRouter} from "next/navigation";
+import { Product } from "@/UI/products/types/types"
+import Image from "next/image"
+import { truncate } from "@/utils/functions/truncate"
+import { formatPrice } from "@/utils/functions/formatPrice"
+import { useRouter } from "next/navigation"
 
-const ProductCard : React.FC<Product> = ( data : Product ) => {
-    const router = useRouter();
-    // const rating : number = data.data.reviews.reduce(( acc, item ) => item.rating + acc, 0) / data.data.reviews.length;
-    return (
-        <article
-            onClick = { () => router.push(`/product/${ data.id }`) }
-            className = { "col-span-1 cursor-pointer border-[1.2px] border-slate-200 bg-slate-50 rounded-sm p-2 transition hover:scale-105 text-center text-sm" }>
-            <div className = { "flex flex-col items-center gap-1 w-full" }>
-                <div className = { "aspect-square overflow-hidden relative w-full" }>
-                    <Image alt = { "imagen del producto" } fill className = { "w-full h-full object-contain " }
-                           src = { data.image }/>
-                </div>
-                <p className = { "mt-4" }>
-                    { truncate(data.name) }
-                </p>
-                {/* <p>
-                    { data.data.reviews.length } reviews
-                </p> */}
-                <p className = { "font-semibold" }>{ formatPrice(data.price) }</p>
-                {/* <div>
-                    <Rating value = { rating }/>
-                </div> */}
-            </div>
-        </article>
-    )
+const ProductCard: React.FC<Product> = (data: Product) => {
+  const router = useRouter()
+  return (
+    <article
+      onClick={() => router.push(`/product/${data.id}`)}
+      className="cursor-pointer rounded-xl p-4 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl bg-white bg-opacity-90 backdrop-blur-md"
+    >
+      <div className="flex flex-col items-center gap-3">
+        <div className="aspect-square relative w-full rounded-xl overflow-hidden shadow-md">
+          <Image
+            alt="imagen del producto"
+            src={data.image}
+            fill
+            className="w-full h-full object-contain transition-transform duration-300 ease-in-out hover:scale-110"
+          />
+        </div>
+        <div className="w-full text-center">
+          <p className="mt-2 text-lg font-semibold text-gray-800">
+            {truncate(data.name)}
+          </p>
+          <p className="mt-1 text-xl font-bold text-indigo-600">
+            {formatPrice(data.price)}
+          </p>
+        </div>
+      </div>
+    </article>
+  )
 }
+
 export default ProductCard

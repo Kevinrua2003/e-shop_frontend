@@ -11,6 +11,7 @@ import Status from "@/UI/products/components/Status";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 interface OrderRow {
     id: string;
@@ -127,7 +128,20 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
             return (
                 <div className="flex w-full justify-center items-center text-center gap-1 m-2">
                     <ActionButton icon={MdCached} onClick={() => {handleChangeStock(params.row.id)}}/>
-                    <ActionButton icon={MdDelete} onClick={() => {handleDelete(params.row.id)}}/>
+                    <ActionButton icon={MdDelete} onClick={() => {
+                        Swal.fire({
+                                title: "Do you want to delete this order?",
+                                showDenyButton: true,
+                                showCancelButton: false,
+                                confirmButtonText: "Delete",
+                                denyButtonText: "Don't Delete it",
+                                cancelButtonText: "Cancel",
+                            }).then((result) => {
+                                    if(result.isConfirmed){
+                                       handleDelete(params.row.id)
+                                    }
+                              })
+                        }}/>
                     <ActionButton icon={MdRemoveRedEye} onClick={() => {router.push(`/admin/edit-order/${params.row.id}`)}}/>
                 </div>
             );

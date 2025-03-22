@@ -2,7 +2,6 @@
 
 import {ManageProductsClientProps, Product} from "@/UI/products/types/types";
 import {DataGrid, GridColDef} from "@mui/x-data-grid"
-// import {formatPrice} from "@/utils/functions/formatPrice";
 import Heading from "@/UI/Headings/components/Heading";
 import { MdCached, MdClose, MdDelete, MdDone, MdModeEdit, MdRemoveRedEye } from "react-icons/md";
 import Status from "@/UI/products/components/Status";
@@ -11,6 +10,7 @@ import toast from "react-hot-toast";
 import { useCallback } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2"
 
 
 
@@ -91,8 +91,23 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({products}) =
         {field: 'actions', headerName: "Actions", width: 180, align: "center", headerAlign: "center" ,renderCell: (params) => {
             return (
                 <div className="flex w-full justify-center items-center text-center gap-1 m-2">
-                    <ActionButton icon={MdCached} onClick={() => {handleChangeStock(params.row.id)}}/>
-                    <ActionButton icon={MdDelete} onClick={() => {handleDelete(params.row.id)}}/>
+                    <ActionButton icon={MdCached} onClick={() => {
+                      handleChangeStock(params.row.id)
+                      }}/>
+                    <ActionButton icon={MdDelete} onClick={() => {
+                      Swal.fire({
+                        title: "Do you want to delete this product?",
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: "Delete",
+                        denyButtonText: "Don't Delete it",
+                        cancelButtonText: "Cancel",
+                      }).then((result) => {
+                        if(result.isConfirmed){
+                          handleDelete(params.row.id)
+                        }
+                      })                      
+                      }}/>
                     <ActionButton icon={MdRemoveRedEye} onClick={() => {router.push(`/admin/item-view/${params.row.id}`)}}/>
                     <ActionButton icon={MdModeEdit} onClick={() => {router.push(`/admin/edit-product/${params.row.id}`)}}/>
                 </div>

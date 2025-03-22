@@ -1,7 +1,12 @@
-import { Order, Product, User } from "@/UI/products/types/types";
 import {IconType} from "react-icons";
 
 export interface AdminNavItemProps {
+    selected?: boolean;
+    icon: IconType;
+    label: string;
+}
+
+export interface CategoryNavItemProps {
     selected?: boolean;
     icon: IconType;
     label: string;
