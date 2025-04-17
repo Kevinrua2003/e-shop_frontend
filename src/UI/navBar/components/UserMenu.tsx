@@ -8,7 +8,7 @@ import MenuItem from "@/UI/navBar/components/MenuItem";
 import BackDrop from "@/UI/navBar/components/BackDrop";
 import { useAuth } from "@/app/auth/context/AuthContext";
 import { Role } from "@/UI/products/types/types";
-import { MdAdminPanelSettings, MdAppRegistration, MdLogin, MdLogout } from "react-icons/md";
+import { MdAdminPanelSettings, MdAppRegistration, MdLogin, MdLogout, MdPersonPin } from "react-icons/md";
 
 const UserMenu = () => {
     const { user, logout } = useAuth();
@@ -40,6 +40,18 @@ const UserMenu = () => {
                                 >
                                     <MdAdminPanelSettings className="text-xl text-indigo-600" />
                                     <MenuItem>Admin Panel</MenuItem>
+                                </div>
+                            </Link>
+                        )}
+
+                        {user && user.userRole === Role.USER && (
+                            <Link href={`/user/${user.userId}`}>
+                                <div 
+                                    onClick={toggleOpen}
+                                    className="flex items-center gap-2 p-3 hover:bg-gray-100 transition-all duration-200 cursor-pointer"
+                                >
+                                    <MdPersonPin className="text-xl text-indigo-600" />
+                                    <MenuItem>Your Orders</MenuItem>
                                 </div>
                             </Link>
                         )}

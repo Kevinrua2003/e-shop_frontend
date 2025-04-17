@@ -40,7 +40,7 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
         });
     }
 
-    const handleChangeStock = useCallback((id: string) => {
+    const handleChangeStatus = useCallback((id: string) => {
         axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`)
           .then(response => {
             const order = {
@@ -127,7 +127,7 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
         { field: 'actions', headerName: "Actions", width: 180, align: "center", headerAlign: "center" ,renderCell: (params) => {
             return (
                 <div className="flex w-full justify-center items-center text-center gap-1 m-2">
-                    <ActionButton icon={MdCached} onClick={() => {handleChangeStock(params.row.id)}}/>
+                    <ActionButton icon={MdCached} onClick={() => {handleChangeStatus(params.row.id)}}/>
                     <ActionButton icon={MdDelete} onClick={() => {
                         Swal.fire({
                                 title: "Do you want to delete this order?",
