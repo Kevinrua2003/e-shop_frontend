@@ -17,8 +17,7 @@ const ProductPage = ( ) => {
         axios.get(`http://localhost:5000/product/${productId}`).then(response => {
             setProduct(response.data);
         }).catch(err => {
-            console.log(err);
-            
+            console.log(err);            
         })
     })
 

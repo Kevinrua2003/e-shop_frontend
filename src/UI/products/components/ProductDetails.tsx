@@ -71,7 +71,8 @@ const ProductDetails = (product: Product) => {
         ) : (
           <Button 
             custom="max-w-[300px]" 
-            label="Add to Cart"
+            disabled={!product.inStock}
+            label={`${product.inStock ? `Add to cart` : `Sorry, not in stock`}`}
             onClick={() => handleAddProductToCart(product.id)}
           />
         )}

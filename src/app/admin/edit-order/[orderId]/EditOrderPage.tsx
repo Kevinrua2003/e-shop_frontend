@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Heading from '@/UI/Headings/components/Heading';
 
-interface OrderItemRow {
+export interface OrderItemRow {
     id: string;
     orderId: string;
     productId: string;

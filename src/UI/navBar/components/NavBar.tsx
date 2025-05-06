@@ -25,12 +25,10 @@ const NavBar = () => {
                             />
                         </div>
 
-                        {/* Categorías */}
                         <div className="hidden md:flex">
                             <CategoryNav />
                         </div>
 
-                        {/* Carrito & Usuario */}
                         <div className="flex gap-6 items-center">
                             <CartCount />
                             <UserMenu />

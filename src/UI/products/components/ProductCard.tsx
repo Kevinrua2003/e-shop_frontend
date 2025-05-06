@@ -1,17 +1,19 @@
 'use client'
 
 import React from 'react'
-import { Product } from "@/UI/products/types/types"
+import { Product, Role } from "@/UI/products/types/types"
 import Image from "next/image"
 import { truncate } from "@/utils/functions/truncate"
 import { formatPrice } from "@/utils/functions/formatPrice"
 import { useRouter } from "next/navigation"
+import { useAuth } from '@/app/auth/context/AuthContext'
 
 const ProductCard: React.FC<Product> = (data: Product) => {
+  const {user} = useAuth()
   const router = useRouter()
   return (
     <article
-      onClick={() => router.push(`/product/${data.id}`)}
+      onClick={() => router.push(`${user && user.userRole === Role.ADMIN ? `/admin/item-view/${data.id}`:`/product/${data.id}`}`)}
       className="cursor-pointer rounded-xl p-4 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl bg-white bg-opacity-90 backdrop-blur-md"
     >
       <div className="flex flex-col items-center gap-3">
