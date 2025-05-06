@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useCallback } from "react";
-import { ManageOrdersClientProps } from "@/UI/products/types/types";
+import React, { useCallback, useEffect, useState } from "react";
+import { ManageOrdersClientProps, User } from "@/UI/products/types/types";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { formatPrice } from "@/utils/functions/formatPrice";
 import Heading from "@/UI/Headings/components/Heading";
@@ -25,16 +25,23 @@ interface OrderRow {
 const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
 
     const router = useRouter();
+    const [users, setUsers] = useState<User[]>([]);
     let rows: OrderRow[] = [];
+
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user`)
+            .then(response => setUsers(response.data))
+            .catch(err => console.log(err))
+    }, []);
 
     if (orders) {
         rows = orders.map(order => {
             return {
                 id: order.id,
-                customer: order.userId,
+                customer: users.find(x => x.id === order.userId)?.name || "?",
                 amount: formatPrice(order.amount),
                 paymentStatus: order.status,
-                date: order.createDate.toString(), // note: ensuring toString() is called
+                date: order.createDate.toString(),
                 deliverStatus: order.deliverStatus,
             };
         });
