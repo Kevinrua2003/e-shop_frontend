@@ -4,7 +4,7 @@ import {LinkButtonProps} from "@/UI/buttons/types/types";
 
 const LinkButton: React.FC<LinkButtonProps> = (props: LinkButtonProps) => {
     return (
-        <Link 
+        <Link
           href={props.link} 
           className={`${props.className} flex items-center`}
         >
