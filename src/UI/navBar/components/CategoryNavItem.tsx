@@ -1,13 +1,9 @@
 import {CategoryNavItemProps} from "@/UI/admin/types/types";
 import { useRouter } from "next/navigation";
 
-const CategoryNavItem: React.FC<CategoryNavItemProps> = ({
-    selected,
-    icon:Icon,
-    label,                                             }) => {
+const CategoryNavItem: React.FC<CategoryNavItemProps> = ({selected, icon:Icon, label, }) => {
 
-    
-        const router = useRouter();
+    const router = useRouter();
 
     return (
         <div

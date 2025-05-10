@@ -40,19 +40,6 @@ export interface User{
     ADMIN,USER
  }
 
-// export interface ProductCardProps {
-//     data : {
-//         id : string
-//         name : string
-//         description : string
-//         price : number
-//         brand : string
-//         category : string
-//         inStock : boolean
-//         image : string
-//     }
-// }
-
 export interface ManageProductsClientProps {
     products: Product[];
 }
@@ -78,11 +65,6 @@ export type CartItem = {
     price: number;
   };
 
-export interface SetColorProps {
-    image : string,
-    cartProduct : CartProductType,
-}
-
 export interface SetQuantityProps {
     cartCounter? : boolean,
     cartProduct : CartProductType,
@@ -100,7 +82,3 @@ export interface StatusProps{
 export interface ProductImageProps {
     cartProduct : CartProductType,
 }
-
-// export interface ListRatingProps {
-//     product : ProductCardProps
-// }

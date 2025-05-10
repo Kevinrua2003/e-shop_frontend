@@ -26,18 +26,6 @@ export interface CategoryInputProps{
     onClick: (value: string) => void;
 }
 
-export interface SelectImageInputProps{
-    item?: ImageType;
-    handleFileChange?: (value: File) => void;
-}
-
-export interface SelectColorInputProps{
-    item: ImageType;
-    addImageToState: (value: ImageType) => void;
-    removeImageFromState: (value: ImageType) => void;
-    isProductCreated: boolean;
-}
-
 export type ImageType = {
     color: string;
     colorCode: string;
