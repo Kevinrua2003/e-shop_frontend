@@ -14,7 +14,7 @@ const ProductPage = ( ) => {
     const [product, setProduct] = useState<Product>()
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/product/${productId}`).then(response => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`).then(response => {
             setProduct(response.data);
         }).catch(err => {
             console.log(err);            
