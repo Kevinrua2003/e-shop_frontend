@@ -79,6 +79,13 @@ export interface StatusProps{
     color: string
 }
 
+export interface ActionButtonProps {
+    text?: string;
+    onClick: () => void;
+    disabled?: boolean;
+    icon: React.ComponentType<{ size: number }>;
+}
+
 export interface ProductImageProps {
     cartProduct : CartProductType,
 }

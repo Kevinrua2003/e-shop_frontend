@@ -1,9 +1,10 @@
 import { ActionButtonProps } from "../types/types";
 
-const ActionButton: React.FC<ActionButtonProps> = ({onClick, disabled, icon: Icon}) => {
+const ActionButton: React.FC<ActionButtonProps> = ({text , onClick, disabled, icon: Icon}: ActionButtonProps) => {
 
     return (
         <button
+            title={`${text}`}
             onClick={onClick}
             disabled={disabled}
             className={`
