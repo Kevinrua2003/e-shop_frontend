@@ -6,7 +6,7 @@ import { Role } from "@/UI/products/types/types";
 
 interface AuthContextType {
     user: { userId: string; userName: string; userRole: Role } | null;
-    login: (email: string, password: string, name?: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
     logout: () => void;
 }
 
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       fetchUser();
       }, []);
 
-    const login = async (email: string, password: string, name?: string) => {
+    const login = async (email: string, password: string) => {
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
                 method: "POST",
@@ -87,7 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
             method: "POST",
-            credentials: "include",
+            credentials: "include", 
           });
           if (res.ok) {
             toast.success("You are logged out");

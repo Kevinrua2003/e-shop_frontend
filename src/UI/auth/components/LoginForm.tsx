@@ -31,7 +31,7 @@ const LoginForm = () => {
         setIsLoading(true);
 
         try {
-            await login(data.email, data.password, data.name);
+            await login(data.email, data.password);
         } catch (error) {
             console.log(error);
             toast.error("Invalid credentials");
@@ -56,18 +56,6 @@ const LoginForm = () => {
 
                 {/* Formulario */}
                 <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="flex flex-col">
-                        <label className="font-medium text-gray-700">Name</label>
-                        <input 
-                            {...register("name")} 
-                            type="text" 
-                            disabled={isLoading} 
-                            className="p-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
-                            placeholder="Enter your name"
-                        />
-                        {errors.name && <span className="text-red-500 text-sm mt-1">This field is required</span>}
-                    </div>
-
                     <div className="flex flex-col">
                         <label className="font-medium text-gray-700">Email</label>
                         <input 
