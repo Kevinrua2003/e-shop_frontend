@@ -5,7 +5,6 @@ import CategoryInput from '@/UI/inputs/components/CategoryInput';
 import Input from '@/UI/inputs/components/Input';
 import { Product } from '@/UI/products/types/types';
 import { categories } from '@/utils/categories';
-import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -46,15 +45,15 @@ function EditProductPage() {
         }, [isProductUpdated, reset]);
 
     useEffect(() => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`).then(response => {
-            setProd(response.data);
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`).then(response => response.json()).then(data => {
+            setProd(data);
         }).catch(err => {
             console.log(err);            
         })
     })
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {       
-    
+       
         setIsLoading(true);
         try {
 
@@ -68,21 +67,21 @@ function EditProductPage() {
             image: data.image ? data.image : prod?.image,
         }
     
-          const response = await axios.patch(
+          const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`,
-            product,
             {
+              method: 'PATCH',
               headers: {
                 "Content-Type": "application/json",
               },
+              body: JSON.stringify(product),
             }
           );
     
-          if (response.status === 200) {
+          if (response.ok) {
             toast.success("Product updated successfully");
             setIsProductUpdated(true);
             setIsLoading(false);
-            // window.location.reload();
             router.push("/admin/manage-products")
           } else {
             toast.error(`Error updating product: ${response.statusText}`);

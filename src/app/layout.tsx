@@ -8,7 +8,12 @@ import {Toaster} from 'react-hot-toast'
 import { AuthProvider } from "./auth/context/AuthContext";
 import { ProductsFilterProvider } from "@/hooks/products/useProductsFilter";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ['400', '700'] })
+const poppins = Poppins({ 
+    subsets: ["latin"], 
+    weight: ['400', '700'],
+    variable: '--font-poppins',
+    display: 'swap',
+})
 
 export const metadata : Metadata = {
     title: "E-shop",
@@ -22,8 +27,8 @@ export default function RootLayout ( {
 }> ) {
 
     return (
-      <html lang="en" className={poppins.className}>
-        <body className="antialiased text-slate-700">
+      <html lang="en" className={poppins.variable}>
+        <body className={`antialiased text-slate-700 ${poppins.className}`}>
         <Toaster toastOptions = { {
             style: {
                 background: "rgb(51 65 85)",

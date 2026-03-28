@@ -8,7 +8,12 @@ import UserMenu from "@/UI/navBar/components/UserMenu"
 import { AiFillHome } from "react-icons/ai"
 import CategoryNav from './CategoryNav'
 
-const redressed = Redressed({ subsets: ['latin'], weight: ['400'] });
+const redressed = Redressed({ 
+    subsets: ['latin'], 
+    weight: ['400'],
+    variable: '--font-redressed',
+    display: 'swap',
+});
 
 const NavBar = () => {
     return (
@@ -21,7 +26,7 @@ const NavBar = () => {
                                 link="/" 
                                 text="Home" 
                                 icon={AiFillHome}
-                                className={`${redressed.className} font-bold text-white text-lg flex flex-row items-center justify-center gap-2`}
+                                className={`${redressed.variable} font-bold text-white text-lg flex flex-row items-center justify-center gap-2`}
                             />
                         </div>
 

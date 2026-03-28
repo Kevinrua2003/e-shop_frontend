@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Image from "next/image";
-import axios from 'axios';
 import { Product } from '@/UI/products/types/types';
 import Link from 'next/link';
 import { formatPrice } from '@/utils/functions/formatPrice';
@@ -11,8 +10,8 @@ const HomeBanner = () => {
     const [prod, setProd] = useState<Product | null>(null);
 
     useEffect(() => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/most/expensive`).then(res => {                 
-            setProd(res.data);
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/most/expensive`).then(res => res.json()).then(data => {                 
+            setProd(data);
         }) 
     }, [setProd]);
 
@@ -22,7 +21,7 @@ const HomeBanner = () => {
                 <div className="absolute inset-0 bg-black opacity-30"></div>
                 <div 
                   className="relative mx-auto py-8 px-4 md:py-12 md:px-8 flex flex-col md:flex-row gap-4 items-center justify-evenly animate-fadeIn">
-                    {prod ?
+                    {prod?.name ?
                         <div className="relative bg-gradient-to-r from-blue-500 to-purple-600 mb-8 rounded-xl shadow-2xl overflow-hidden ">
                             <Link href={`/product/${prod?.id}`}>
                                 <div 

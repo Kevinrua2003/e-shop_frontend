@@ -8,7 +8,6 @@ import Heading from "@/UI/Headings/components/Heading";
 import { MdAccessTimeFilled, MdCached, MdDelete, MdDone, MdRemoveRedEye } from "react-icons/md";
 import ActionButton from "@/UI/products/components/ActionButton";
 import Status from "@/UI/products/components/Status";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -29,8 +28,9 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
     let rows: OrderRow[] = [];
 
     useEffect(() => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user`)
-            .then(response => setUsers(response.data))
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`)
+            .then(response => response.json())
+            .then(data => setUsers(data))
             .catch(err => console.log(err))
     }, []);
 
@@ -48,20 +48,25 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
     }
 
     const handleChangeStatus = useCallback((id: string) => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`)
-          .then(response => {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`)
+          .then(response => response.json())
+          .then(orderData => {
             const order = {
-                userId: response.data.userId,
-                amount: response.data.amount,
-                status: response.data.status,
-                deliverStatus: response.data.deliverStatus === 'pending' ? 'delivered' : 'pending',
+                userId: orderData.userId,
+                amount: orderData.amount,
+                status: orderData.status,
+                deliverStatus: orderData.deliverStatus === 'pending' ? 'delivered' : 'pending',
             };
 
             if (order) {
-              axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, order)
+              fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order),
+              })
                 .then(() => {
                   toast.success("Order deliver status updated successfully");
-                  window.location.reload();
+                  router.refresh();
                 })
                 .catch((err) => {
                   toast.error(`Error updating deliver status: ${err}`);
@@ -71,18 +76,20 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
           .catch((err) => {
             toast.error(`Error fetching order: ${err}`);
           });          
-      }, []);
+      }, [router]);
 
     const handleDelete = useCallback((id: string) => {
-        axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, {
+          method: 'DELETE',
+        })
           .then(() => {
             toast.success("Order deleted successfully");
-            window.location.reload();
+            router.refresh();
           })
           .catch((err) => {
             toast.error(`Error deleting order: ${err}`);
           });
-      }, []);
+      }, [router]);
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", width: 200, align: "center", headerAlign: "center" },

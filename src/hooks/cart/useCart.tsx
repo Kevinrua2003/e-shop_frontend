@@ -2,13 +2,13 @@ import React, {createContext, useCallback, useContext, useEffect, useState} from
 import {CartContextProviderProps, CartContextType} from "@/hooks/cart/types/types";
 import {CartItem} from "@/UI/products/types/types";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useAuth } from "@/app/auth/context/AuthContext";
 
 const getProductPrice = async (productId: string): Promise<number> => {
   try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`);
-    const price = res.data.price;
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`);
+    const data = await res.json();
+    const price = data.price;
     return price;
   } catch (error) {
     toast.error(`Error fetching product price: ${error}`);
@@ -143,11 +143,14 @@ export const CartContextProvider = ( props : CartContextProviderProps ) => {
             deliverStatus: 'pending',
           };
       
-          const { data: createdOrder } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/order`, order, {
+          const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
+            body: JSON.stringify(order),
           });
+          const createdOrder = await orderRes.json();
       
           const orderItemPromises = cartProducts.map((product) => {
             const orderItem = {
@@ -156,10 +159,12 @@ export const CartContextProvider = ( props : CartContextProviderProps ) => {
               price: product.price,
               quantity: product.quantity,
             };
-            return axios.post(`${process.env.NEXT_PUBLIC_API_URL}/order-item`, orderItem, {
+            return fetch(`${process.env.NEXT_PUBLIC_API_URL}/order-item`, {
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
+              body: JSON.stringify(orderItem),
             });
           });
       
@@ -169,13 +174,8 @@ export const CartContextProvider = ( props : CartContextProviderProps ) => {
       
           handleClearCart();
         } catch (error) {
-          if (axios.isAxiosError(error)) {
-            console.error('Error:', error.response?.data || error.message);
-            toast.error(`Error during payment: ${error.response?.data?.message || error.message}`);
-          } else {
             console.error('Error:', error);
-            toast.error(`Unexpected error during payment: ${error}`);
-          }
+            toast.error(`Error during payment: ${error}`);
         }
       }, [cartProducts, user, handleClearCart]);
 

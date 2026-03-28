@@ -4,7 +4,6 @@ import SummaryTarget from "@/UI/admin/components/SummaryTarget";
 import Heading from "@/UI/Headings/components/Heading";
 import { Order, OrderItem, Product, User } from "@/UI/products/types/types";
 import { formatPrice } from "@/utils/functions/formatPrice";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
@@ -21,24 +20,24 @@ const Summary = () => {
         async function fetchData() {
             try {
                 const [productRes, orderRes, userRes, itemRes] = await Promise.all([
-                    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product`),
-                    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order`),
-                    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user`),
-                    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order-item`),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`).then(res => res.json()),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`).then(res => res.json()),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`).then(res => res.json()),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/order-item`).then(res => res.json()),
                 ]);
 
-                setProducts(productRes.data);
-                setOrders(orderRes.data);
-                setUsers(userRes.data);
-                setItems(itemRes.data);
+                setProducts(productRes);
+                setOrders(orderRes);
+                setUsers(userRes);
+                setItems(itemRes);
 
-                const stored = productRes.data.reduce((acc: number, prod: Product) => prod.inStock ? acc + prod.price : acc, 0);
+                const stored = productRes.reduce((acc: number, prod: Product) => prod.inStock ? acc + prod.price : acc, 0);
                 setAmmountStored(stored);
 
                 let sold = 0;
-                orderRes.data.forEach((order: Order) => {
+                orderRes.forEach((order: Order) => {
                     if (order.status === "complete") {
-                        itemRes.data.forEach((it: OrderItem) => {
+                        itemRes.forEach((it: OrderItem) => {
                             if (it.orderId === order.id) {
                                 sold += it.price * it.quantity;
                             }

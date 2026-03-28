@@ -8,7 +8,6 @@ import Status from "@/UI/products/components/Status";
 import ActionButton from "@/UI/products/components/ActionButton";
 import toast from "react-hot-toast";
 import { useCallback } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2"
 
@@ -26,15 +25,19 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({products}) =
     }
 
     const handleChangeStock = useCallback((id: string) => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`)
-          .then(response => {
-            const product = response.data;
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`)
+          .then(response => response.json())
+          .then(product => {
             product.inStock = !product.inStock;
             if (product) {
-              axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`, product)
+              fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(product),
+              })
                 .then(() => {
                   toast.success("Product updated successfully");
-                  window.location.reload();
+                  router.refresh();
                 })
                 .catch((err) => {
                   toast.error(`Error updating status: ${err}`);
@@ -44,18 +47,20 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({products}) =
           .catch((err) => {
             toast.error(`Error fetching product: ${err}`);
           });          
-      }, []);
+      }, [router]);
 
     const handleDelete = useCallback((id: string) => {
-        axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`, {
+          method: 'DELETE',
+        })
           .then(() => {
             toast.success("Product deleted successfully");
-            window.location.reload();
+            router.refresh();
           })
           .catch((err) => {
             toast.error(`Error deleting product: ${err}`);
           });
-      }, []);
+      }, [router]);
       
 
     const columns: GridColDef[] = [

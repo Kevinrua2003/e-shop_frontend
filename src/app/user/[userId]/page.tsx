@@ -2,8 +2,7 @@
 import Heading from '@/UI/Headings/components/Heading';
 import NullData from '@/UI/messages/components/NullData';
 import { Order, OrderItem, Product } from '@/UI/products/types/types';
-import axios from 'axios';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -24,6 +23,7 @@ interface OrderRow {
 }
 
 function Page() {
+  const router = useRouter();
   const {userId} = useParams();
   const [userOrders, setUserOrders] = useState<Order[] | null>(null);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
@@ -44,35 +44,37 @@ function Page() {
         }
 
     useEffect(() => {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/byUser/${userId}`).then((response) => {
-        setUserOrders(response.data);
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/byUser/${userId}`).then(response => response.json()).then(data => {
+        setUserOrders(data);
       }).catch(() => {
         toast.error("Error during fetch");
       });
     }, [userId]);
 
     useEffect(() => {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order-item`)
-        .then(response => setOrderItems(response.data))
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/order-item`)
+        .then(response => response.json())
+        .then(data => setOrderItems(data))
         .catch(() => toast.error("Error loading order items"));
     }, []);
 
     useEffect(() => {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product`)
-        .then(response => setProducts(response.data))
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`)
+        .then(response => response.json())
+        .then(data => setProducts(data))
         .catch(() => toast.error("Error loading order items"));
     }, []);
 
   const handleDelete = useCallback((id: string) => {
-      axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, { method: 'DELETE' })
         .then(() => {
           toast.success("Order deleted successfully");
-          window.location.reload();
+          router.refresh();
         })
         .catch((err) => {
           toast.error(`Error deleting order: ${err}`);
         });
-    }, []);
+    }, [router]);
 
     if(userOrders?.length === 0) return (<NullData title={'You have no orders in the store'}/>);
 

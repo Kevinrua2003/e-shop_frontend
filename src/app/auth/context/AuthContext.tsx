@@ -41,7 +41,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               userName: data.userName,
               userRole: rol,
             });
-            console.log(data);
             
           } else {
             setUser(null);
@@ -61,7 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ email, password, name }),
+                body: JSON.stringify({ email, password }),
             });
     
             if (!res.ok) {
@@ -72,10 +71,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
             const data = await res.json();
             const rol = data.userRole === 'ADMIN' ? Role.ADMIN: Role.USER; 
-            console.log(data.userRole);
-            console.log(typeof(data.userRole));           
             
-            setUser({ userId: data.userId, userName: data.userName, userRole: rol });    
+            setUser({ userId: data.userId, userName: data.userName, userRole: rol });
             router.push("/");
         } catch (error) {
             console.log(error);

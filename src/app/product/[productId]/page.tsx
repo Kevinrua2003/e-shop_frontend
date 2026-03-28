@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import Container from "@/UI/container/components/Container";
 import ProductDetails from "@/UI/products/components/ProductDetails";
 import { Product } from '@/UI/products/types/types';
-import axios from 'axios';
 import { useParams } from 'next/navigation';
 
 
@@ -14,8 +13,8 @@ const ProductPage = ( ) => {
     const [product, setProduct] = useState<Product>()
 
     useEffect(() => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`).then(response => {
-            setProduct(response.data);
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`).then(response => response.json()).then(data => {
+            setProduct(data);
         }).catch(err => {
             console.log(err);            
         })

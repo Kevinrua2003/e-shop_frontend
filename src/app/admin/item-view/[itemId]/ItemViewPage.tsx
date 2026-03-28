@@ -2,7 +2,6 @@
 import NullData from '@/UI/messages/components/NullData';
 import ProductImage from '@/UI/products/components/ProductImage';
 import { Product } from '@/UI/products/types/types';
-import axios from 'axios';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
@@ -23,8 +22,8 @@ function ItemViewPage() {
 
     useEffect(() => {
         try {
-            axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${itemId}`).then(response => {
-                setProduct(response.data);
+            fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${itemId}`).then(response => response.json()).then(data => {
+                setProduct(data);
             });            
         } catch (error) {
             setProduct({

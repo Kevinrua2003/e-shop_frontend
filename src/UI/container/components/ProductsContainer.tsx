@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import ProductCard from '@/UI/products/components/ProductCard'
-import axios from 'axios'
 import { Product } from '@/UI/products/types/types'
 import { useProductsFilter } from '@/hooks/products/useProductsFilter'
 import NullData from '@/UI/messages/components/NullData'
@@ -12,12 +11,13 @@ const ProductsContainer = () => {
   const { category } = useProductsFilter()
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product`)
-         .then(response => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`)
+         .then(response => response.json())
+         .then(data => {
            if (category === "All") {
-             setProducts(response.data)
+             setProducts(data)
            } else {
-             setProducts(response.data.filter((prod: Product) => prod.category === category))
+             setProducts(data.filter((prod: Product) => prod.category === category))
            }
          })
          .catch(err => console.log(err))

@@ -5,12 +5,13 @@ import { useAuth } from "@/app/auth/context/AuthContext";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import axios from "axios";
 import { Role } from "@/UI/products/types/types";
 import CustomCheckBox from "@/UI/inputs/components/CustomCheckBox";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
   const { user } = useAuth();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
@@ -34,31 +35,30 @@ const RegisterForm = () => {
       role: data.role ? "ADMIN" : "USER",
     };
     try {
-      await axios.post(
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-        newUser
-      );
-      toast.success("You are now registered, please login");
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        if (err.response) {
-          if (Array.isArray(err.response.data?.message)) {
-            err.response.data.message.forEach((msg: string) => {
-              toast.error(`Error: ${msg}`);
-            });
-          } else {
-            toast.error(
-              `Error: ${err.response.data?.message || "Unknown error"}`
-            );
-          }
-        } else {
-          toast.error("Network error. Please try again.");
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newUser),
         }
+      );
+      if (res.ok) {
+        toast.success("You are now registered, please login");
+        router.refresh();
       } else {
-        toast.error("An unexpected error occurred.");
+        const errorData = await res.json();
+        if (Array.isArray(errorData?.message)) {
+          errorData.message.forEach((msg: string) => {
+            toast.error(`Error: ${msg}`);
+          });
+        } else {
+          toast.error(`Error: ${errorData.message || "Unknown error"}`);
+        }
       }
+    } catch (err) {
+      toast.error("Network error. Please try again.");
     }
-    window.location.reload();
     setIsLoading(false);
   };
 

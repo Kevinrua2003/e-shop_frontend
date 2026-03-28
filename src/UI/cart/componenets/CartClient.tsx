@@ -7,17 +7,15 @@ import Heading from "@/UI/Headings/components/Heading";
 import Button from "@/UI/buttons/components/Button";
 import ItemContent from "@/UI/cart/componenets/ItemContent";
 import { formatPrice } from "@/utils/functions/formatPrice";
-import axios from 'axios';
 import { CartProductType } from '@/UI/products/types/types';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/app/auth/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
-// Función para obtener el producto completo desde la API
 const getProduct = async (id: string): Promise<CartProductType | null> => {
   try {    
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`);
-    return res.data;
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`);
+    return res.json();
   } catch (error) {
     console.log(error);
     return null;

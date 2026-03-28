@@ -1,7 +1,6 @@
 'use client'
 
 import { OrderItem } from '@/UI/products/types/types';
-import axios from 'axios';
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -21,8 +20,8 @@ function EditOrderPage() {
     const [rows, setRows] = useState<OrderItemRow[]>([]);
 
     useEffect(() => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order-item`).then(response => {
-            setRows(response.data
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/order-item`).then(response => response.json()).then(data => {
+            setRows(data
                 .filter((item: OrderItem) => item.orderId === orderId)
                 .map((item: OrderItem) => ({
                     id: item.id,

@@ -10,10 +10,11 @@ import CategoryInput from "@/UI/inputs/components/CategoryInput";
 import Button from "@/UI/buttons/components/Button";
 import { AiFillFileAdd } from "react-icons/ai";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const AddProductForm = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isProductCreated, setIsProductCreated] = useState(false);
 
@@ -59,20 +60,21 @@ const AddProductForm = () => {
         return toast.error("Product must have an image link");
       }
 
-      const response = await axios.post(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/product`,
-        data,
         {
+          method: 'POST',
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(data),
         }
       );
 
-      if (response.status === 201) {
+      if (response.ok) {
         toast.success("Product created successfully");
         setIsProductCreated(true);
-        window.location.reload();
+        router.refresh();
       } else {
         toast.error("Error creating product");
       }
