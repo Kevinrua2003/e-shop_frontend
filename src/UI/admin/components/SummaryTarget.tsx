@@ -3,9 +3,31 @@ import { SummaryTargetProps } from "../types/types";
 
 const SummaryTarget: React.FC<SummaryTargetProps> = ({label, value}) => {
     return (
-        <div className="hover:scale-125 transition-transform duration-500 bg-blue-50 rounded-xl border-2 border-blue-400 items-center flex flex-col gap-2 transition ">
-           <div className="font-bold text-xl text-blue-900">{label}</div>
-           <div>{value}</div>
+        <div className="
+            p-6
+            rounded-[var(--radius-md)]
+            bg-[hsl(var(--surface-elevated))]
+            border border-[hsl(var(--border-subtle))]
+            flex flex-col items-center justify-center gap-2
+            transition-all duration-300
+            hover:border-[hsl(var(--accent)/0.3)]
+            hover:shadow-[var(--shadow-sm)]
+        ">
+            <span className="
+                text-xs 
+                uppercase 
+                tracking-widest 
+                text-[hsl(var(--text-muted))]
+            ">
+                {label}
+            </span>
+            <span className="
+                text-3xl 
+                font-bold 
+                text-[hsl(var(--text-primary))]
+            ">
+                {value}
+            </span>
         </div>
     )
 }

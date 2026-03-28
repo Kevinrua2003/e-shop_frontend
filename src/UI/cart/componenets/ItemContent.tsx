@@ -13,10 +13,17 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }: ItemContentProps) => 
   const { handleRemoveProductFromCart, handleCartQtyIncrease, handleCartQtyDecrease } = useCart();
 
   return (
-    <div className="grid grid-cols-5 text-sx md:text-sm gap-4 border-t-[1.5px] border-slate-200 py-4 items-center">
-      <div className="col-span-2 flex justify-self-start gap-2 md:gap-4">
-        <Link href={`/products/${item.id}`}>
-          <div className="relative w-[70px] aspect-square">
+    <div className="
+        grid grid-cols-5 
+        gap-4 
+        border-t border-[hsl(var(--border-subtle))]
+        py-4 
+        items-center
+        text-[hsl(var(--text-primary))]
+    ">
+      <div className="col-span-2 flex justify-self-start gap-3 md:gap-4">
+        <Link href={`/product/${item.id}`}>
+          <div className="relative w-[70px] aspect-square bg-[hsl(var(--surface))] rounded-[var(--radius-sm)] overflow-hidden">
             {item.image && (
               <Image 
                 src={item.image} 
@@ -28,19 +35,20 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }: ItemContentProps) => 
           </div>
         </Link>
         <div className="flex flex-col justify-between">
-          <Link href={`/products/${item.id}`}>{truncate(item.name)}</Link>
-          <div className="w-[70px]">
-            <Button 
-              outline 
-              small 
-              onClick={() => handleRemoveProductFromCart(item.id)} 
-              label="Remove" 
-              custom="text-slate-500" 
-            />
-          </div>
+          <Link href={`/product/${item.id}`} className="text-sm font-medium hover:text-[hsl(var(--accent))]">
+            {truncate(item.name)}
+          </Link>
+          <Button 
+            variant="ghost"
+            small 
+            onClick={() => handleRemoveProductFromCart(item.id)} 
+            label="Remove" 
+          />
         </div>
       </div>
-      <div className="justify-self-center">{formatPrice(item.price)}</div>
+      <div className="justify-self-center text-[hsl(var(--text-secondary))]">
+        {formatPrice(item.price)}
+      </div>
       <div className="justify-self-center">
         <SetQuantity 
           cartCounter={true}
@@ -49,11 +57,11 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }: ItemContentProps) => 
           handleQuantityDecrease={() => handleCartQtyDecrease(item.id)}
         />
       </div>
-      <div className="justify-self-end font-semibold">
+      <div className="justify-self-end font-semibold text-[hsl(var(--text-primary))]">
         {formatPrice(item.price * item.quantity)}
       </div>
     </div>
   )
 }
 
-export default ItemContent;
+export default ItemContent

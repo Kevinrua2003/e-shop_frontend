@@ -1,7 +1,173 @@
-/* Inside your global CSS file */
 @import url('https://fonts.googleapis.com/css2?family=Redressed:wght@400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* Light theme (default) */
+  --background: 0 0% 100%;
+  --foreground: 220 10% 10%;
+  
+  --surface: 0 0% 98%;
+  --surface-elevated: 0 0% 100%;
+  --surface-hover: 0 0% 96%;
+  
+  --border: 220 5% 85%;
+  --border-subtle: 220 5% 92%;
+  
+  --text-primary: 220 10% 15%;
+  --text-secondary: 220 8% 35%;
+  --text-muted: 220 5% 55%;
+  
+  --accent: 15 80% 55%;
+  --accent-hover: 15 80% 48%;
+  
+  --success: 150 60% 40%;
+  --error: 0 70% 50%;
+  --warning: 40 80% 50%;
+  
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  
+  --font-display: 'Redressed', cursive;
+  --font-body: 'Poppins', sans-serif;
+  
+  --nav-height: 72px;
+}
+
+.dark {
+  --background: 220 15% 8%;
+  --foreground: 0 0% 95%;
+  
+  --surface: 220 15% 10%;
+  --surface-elevated: 220 15% 14%;
+  --surface-hover: 220 15% 16%;
+  
+  --border: 220 10% 22%;
+  --border-subtle: 220 10% 18%;
+  
+  --text-primary: 0 0% 92%;
+  --text-secondary: 0 0% 70%;
+  --text-muted: 0 0% 50%;
+  
+  --accent: 15 85% 60%;
+  --accent-hover: 15 85% 52%;
+  
+  --success: 150 55% 45%;
+  --error: 0 70% 55%;
+  --warning: 40 75% 55%;
+  
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+/* Surface utilities */
+.surface {
+  background-color: hsl(var(--surface));
+}
+
+.surface-elevated {
+  background-color: hsl(var(--surface-elevated));
+}
+
+.surface-hover:hover {
+  background-color: hsl(var(--surface-hover));
+}
+
+/* Text utilities */
+.text-primary {
+  color: hsl(var(--text-primary));
+}
+
+.text-secondary {
+  color: hsl(var(--text-secondary));
+}
+
+.text-muted {
+  color: hsl(var(--text-muted));
+}
+
+/* Border utilities */
+.border-default {
+  border-color: hsl(var(--border));
+}
+
+.border-subtle {
+  border-color: hsl(var(--border-subtle));
+}
+
+/* Shadow utilities */
+.shadow-elevated {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-float {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Radius utilities */
+.rounded-subtle {
+  border-radius: var(--radius-sm);
+}
+
+.rounded-card {
+  border-radius: var(--radius-md);
+}
+
+.rounded-luxe {
+  border-radius: var(--radius-lg);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--surface));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--text-muted));
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: hsl(var(--accent) / 0.2);
+}

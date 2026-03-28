@@ -3,8 +3,14 @@ import {HeadingProps} from "@/UI/Headings/types/types";
 
 const Heading : React.FC<HeadingProps> = ( { title, center } ) => {
     return (
-        <div className = { center ? "text-center" : "text-start" }>
-            <h2 className = { "font-bold text-2xl" }>{ title }</h2>
+        <div className={center ? "text-center" : "text-start"}>
+            <h2 className="
+                font-bold 
+                text-2xl 
+                text-[hsl(var(--text-primary))]
+            ">
+                { title }
+            </h2>
         </div>
     )
 }

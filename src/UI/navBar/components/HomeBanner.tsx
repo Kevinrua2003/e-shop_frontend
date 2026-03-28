@@ -10,66 +10,137 @@ const HomeBanner = () => {
     const [prod, setProd] = useState<Product | null>(null);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/most/expensive`).then(res => res.json()).then(data => {                 
-            setProd(data);
-        }) 
-    }, [setProd]);
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/most/expensive`)
+            .then(res => res.json())
+            .then(data => setProd(data))
+            .catch(() => {}) 
+    }, []);
+
+    if (!prod?.name) {
+        return (
+            <section className="
+                mb-8
+                rounded-[var(--radius-lg)]
+                bg-[hsl(var(--surface-elevated))]
+                border border-[hsl(var(--border-subtle))]
+                overflow-hidden
+            ">
+                <div className="
+                    py-16 px-6
+                    flex flex-col items-center justify-center
+                    text-center
+                    space-y-4
+                ">
+                    <h2 className="
+                        text-3xl md:text-5xl 
+                        font-bold 
+                        text-[hsl(var(--text-primary))]
+                        tracking-tight
+                    ">
+                        Discover
+                    </h2>
+                    <p className="
+                        text-lg 
+                        text-[hsl(var(--text-secondary))]
+                        max-w-md
+                    ">
+                        Explore our curated collection of premium products
+                    </p>
+                </div>
+            </section>
+        )
+    }
 
     return (
-        <div>
-            <div className="relative bg-gradient-to-r from-blue-500 to-purple-600 mb-8 rounded-xl shadow-2xl overflow-hidden">
-                <div className="absolute inset-0 bg-black opacity-30"></div>
-                <div 
-                  className="relative mx-auto py-8 px-4 md:py-12 md:px-8 flex flex-col md:flex-row gap-4 items-center justify-evenly animate-fadeIn">
-                    {prod?.name ?
-                        <div className="relative bg-gradient-to-r from-blue-500 to-purple-600 mb-8 rounded-xl shadow-2xl overflow-hidden ">
-                            <Link href={`/product/${prod?.id}`}>
-                                <div 
-                                  className="relative mx-auto py-8 px-4 md:py-12 md:px-8 flex flex-col md:flex-row gap-4 items-center justify-evenly animate-fadeIn hover:scale-105 transition-transform duration-500 ease-in-out">
-                                    <div className="flex flex-col md:flex-row items-center p-6 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl shadow-lg ">
-                                        <div className="order-1 rounded-xl overflow-hidden">
-                                            <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48">
-                                                <Image
-                                                    src={prod.image}
-                                                    alt="Laptop, celular y reloj inteligente"
-                                                    className="object-cover"
-                                                    fill
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="order-2 mt-4 md:mt-0 md:ml-6 text-white">
-                                            <p className="mt-3 text-xl font-bold tracking-wide">
-                                                {prod.name.substring(0, 30) + "..."}
-                                            </p>
-                                            <p className="mt-2 text-base italic opacity-90">
-                                                {prod.description.substring(0, 150) + "..."}
-                                            </p>
-                                            <p className="mt-2 text-2xl font-extrabold">
-                                                {prod.inStock
-                                                    ? `¡Get it now for: ${formatPrice(prod.price)}!`
-                                                    : "Not available for now"}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>          
-                        :
-                        <div>
-                            <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-                                Products Sale!
-                            </h2>
-                            <p className="text-lg md:text-xl text-white mb-2 drop-shadow-md">
-                                Enjoy a wide variety of items
-                            </p>
-                            <p className="text-2xl md:text-5xl text-yellow-400 font-bold drop-shadow-lg">
-                                GET ANY YOU WANT!
-                            </p>
+        <section className="
+            mb-8
+            rounded-[var(--radius-lg)]
+            bg-[hsl(var(--surface-elevated))]
+            border border-[hsl(var(--border-subtle))]
+            overflow-hidden
+            transition-all duration-300
+            hover:shadow-[var(--shadow-md)]
+        ">
+            <Link href={`/product/${prod.id}`} className="block">
+                <div className="
+                    grid md:grid-cols-2
+                    gap-0
+                ">
+                    <div className="
+                        relative 
+                        aspect-square md:aspect-auto
+                        bg-[hsl(var(--surface))]
+                        flex items-center justify-center
+                        p-8
+                    ">
+                        <div className="relative w-48 h-48 md:w-64 md:h-64">
+                            <Image
+                                src={prod.image}
+                                alt={prod.name}
+                                fill
+                                className="object-contain"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
                         </div>
-                    }
+                    </div>
+                    
+                    <div className="
+                        flex flex-col justify-center
+                        p-8 md:p-12
+                        space-y-4
+                    ">
+                        <span className="
+                            text-xs 
+                            uppercase 
+                            tracking-widest 
+                            text-[hsl(var(--text-muted))]
+                        ">
+                            Featured
+                        </span>
+                        
+                        <h3 className="
+                            text-2xl md:text-3xl
+                            font-bold 
+                            text-[hsl(var(--text-primary))]
+                            leading-tight
+                        ">
+                            {prod.name}
+                        </h3>
+                        
+                        <p className="
+                            text-sm md:text-base
+                            text-[hsl(var(--text-secondary))]
+                            line-clamp-3
+                        ">
+                            {prod.description}
+                        </p>
+                        
+                        <div className="pt-4 flex items-center justify-between">
+                            <span className="
+                                text-2xl md:text-3xl 
+                                font-semibold 
+                                text-[hsl(var(--accent))]
+                            ">
+                                {formatPrice(prod.price)}
+                            </span>
+                            
+                            <span className={`
+                                text-sm 
+                                font-medium 
+                                px-3 py-1 
+                                rounded-full
+                                ${prod.inStock 
+                                    ? 'bg-[hsl(var(--success)/0.1)] text-[hsl(var(--success))]' 
+                                    : 'bg-[hsl(var(--error)/0.1)] text-[hsl(var(--error))]'
+                                }
+                            `}>
+                                {prod.inStock ? 'Available' : 'Out of Stock'}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </Link>
+        </section>
     )
 }
 export default HomeBanner

@@ -20,5 +20,5 @@ export interface ButtonProps {
     custom? : string,
     icon? : IconType,
     onClick? : ( e : React.MouseEvent<HTMLButtonElement> ) => void,
-
+    variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
 }

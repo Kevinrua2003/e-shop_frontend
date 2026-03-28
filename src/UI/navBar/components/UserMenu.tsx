@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { Avatar } from "@mui/material";
 import { AiFillCaretDown } from "react-icons/ai";
 import Link from "next/link";
@@ -13,32 +13,76 @@ import { MdAdminPanelSettings, MdAppRegistration, MdLogin, MdLogout, MdPersonPin
 const UserMenu = () => {
     const { user, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const toggleOpen = useCallback(() => {
         setIsOpen((prev) => !prev);
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     return (
         <>
-            <div className="relative z-30">
-                <div 
+            <div className="relative z-30" ref={menuRef}>
+                <button 
                     onClick={toggleOpen}
-                    className="p-2 flex items-center gap-2 rounded-full cursor-pointer shadow-md transition-all duration-300 
-                    bg-gradient-to-r from-blue-500 to-purple-500 text-white border border-white hover:scale-110 hover:shadow-lg"
+                    className="
+                        p-1.5 
+                        flex items-center gap-2 
+                        rounded-[var(--radius-md)]
+                        cursor-pointer 
+                        transition-all duration-200 
+                        border border-[hsl(var(--border))]
+                        bg-[hsl(var(--surface-elevated))]
+                        hover:border-[hsl(var(--accent)/0.3)]
+                    "
                 >
-                    <Avatar className="border border-white shadow-sm" />
-                    <AiFillCaretDown className="text-lg transition-transform duration-300" />
-                </div>
+                    <Avatar 
+                        sx={{ width: 28, height: 28 }} 
+                        className="border border-[hsl(var(--border))]"
+                    />
+                    <AiFillCaretDown className={`
+                        text-xs 
+                        transition-transform duration-200 
+                        text-[hsl(var(--text-secondary))]
+                        ${isOpen ? 'rotate-180' : ''}
+                    `} />
+                </button>
 
                 {isOpen && (
-                    <div className="absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg overflow-hidden animate-fadeIn">
+                    <div className="
+                        absolute right-0 top-12 
+                        w-56 
+                        bg-[hsl(var(--surface-elevated))]
+                        border border-[hsl(var(--border-subtle))]
+                        rounded-[var(--radius-md)]
+                        shadow-[var(--shadow-lg)]
+                        overflow-hidden
+                        animate-in fade-in slide-in-from-top-2 duration-200
+                    ">
                         {user && user.userRole === Role.ADMIN && (
                             <Link href="/admin">
                                 <div 
                                     onClick={toggleOpen}
-                                    className="flex items-center gap-2 p-3 hover:bg-gray-100 transition-all duration-200 cursor-pointer"
+                                    className="
+                                        flex items-center gap-3 
+                                        p-3 
+                                        text-[hsl(var(--text-primary))]
+                                        hover:bg-[hsl(var(--surface-hover))] 
+                                        transition-colors duration-150 
+                                        cursor-pointer
+                                    "
                                 >
-                                    <MdAdminPanelSettings className="text-xl text-indigo-600" />
+                                    <MdAdminPanelSettings className="text-lg" />
                                     <MenuItem>Admin Panel</MenuItem>
                                 </div>
                             </Link>
@@ -48,9 +92,16 @@ const UserMenu = () => {
                             <Link href={`/user/${user.userId}`}>
                                 <div 
                                     onClick={toggleOpen}
-                                    className="flex items-center gap-2 p-3 hover:bg-gray-100 transition-all duration-200 cursor-pointer"
+                                    className="
+                                        flex items-center gap-3 
+                                        p-3 
+                                        text-[hsl(var(--text-primary))]
+                                        hover:bg-[hsl(var(--surface-hover))] 
+                                        transition-colors duration-150 
+                                        cursor-pointer
+                                    "
                                 >
-                                    <MdPersonPin className="text-xl text-indigo-600" />
+                                    <MdPersonPin className="text-lg" />
                                     <MenuItem>Your Orders</MenuItem>
                                 </div>
                             </Link>
@@ -60,9 +111,16 @@ const UserMenu = () => {
                             <Link href="/auth/login">
                                 <div 
                                     onClick={toggleOpen}
-                                    className="flex items-center gap-2 p-3 hover:bg-gray-100 transition-all duration-200 cursor-pointer"
+                                    className="
+                                        flex items-center gap-3 
+                                        p-3 
+                                        text-[hsl(var(--text-primary))]
+                                        hover:bg-[hsl(var(--surface-hover))] 
+                                        transition-colors duration-150 
+                                        cursor-pointer
+                                    "
                                 >
-                                    <MdLogin className="text-xl text-green-600" />
+                                    <MdLogin className="text-lg" />
                                     <MenuItem>Login</MenuItem>
                                 </div>
                             </Link>
@@ -71,9 +129,16 @@ const UserMenu = () => {
                         <Link href="/auth/register">
                             <div 
                                 onClick={toggleOpen}
-                                className="flex items-center gap-2 p-3 hover:bg-gray-100 transition-all duration-200 cursor-pointer"
+                                className="
+                                    flex items-center gap-3 
+                                    p-3 
+                                    text-[hsl(var(--text-primary))]
+                                    hover:bg-[hsl(var(--surface-hover))] 
+                                    transition-colors duration-150 
+                                    cursor-pointer
+                                "
                             >
-                                <MdAppRegistration className="text-xl text-blue-600" />
+                                <MdAppRegistration className="text-lg" />
                                 <MenuItem>Register</MenuItem>
                             </div>
                         </Link>
@@ -81,9 +146,17 @@ const UserMenu = () => {
                         {user && (
                             <div 
                                 onClick={() => { toggleOpen(); logout(); }}
-                                className="flex items-center gap-2 p-3 hover:bg-red-100 transition-all duration-200 cursor-pointer"
+                                className="
+                                    flex items-center gap-3 
+                                    p-3 
+                                    text-[hsl(var(--error))]
+                                    hover:bg-[hsl(var(--error)/0.1)] 
+                                    transition-colors duration-150 
+                                    cursor-pointer
+                                    border-t border-[hsl(var(--border-subtle))]
+                                "
                             >
-                                <MdLogout className="text-xl text-red-600" />
+                                <MdLogout className="text-lg" />
                                 <MenuItem>Log Out</MenuItem>
                             </div>
                         )}

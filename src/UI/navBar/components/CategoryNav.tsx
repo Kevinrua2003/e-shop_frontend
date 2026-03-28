@@ -3,48 +3,60 @@
 import Container from "@/UI/container/components/Container";
 import CategoryNavItem from "./CategoryNavItem";
 import { MdAllInbox, MdDesktopWindows, MdLaptop, MdMiscellaneousServices, MdPhone, MdTv, MdWatch } from "react-icons/md";
-import { useEffect } from "react";
 import { useProductsFilter } from "@/hooks/products/useProductsFilter";
 
 const CategoryNav = () => {
   const {category, handleSetCategory} = useProductsFilter();
 
-  useEffect(()=>{
-    console.log(category);
-
-
-    
-  }, [category])
-
+  const categories = [
+    { id: 'All', icon: MdAllInbox, label: 'All' },
+    { id: 'Phone', icon: MdPhone, label: 'Phones' },
+    { id: 'TV', icon: MdTv, label: 'TVs' },
+    { id: 'Watch', icon: MdWatch, label: 'Watches' },
+    { id: 'Laptops', icon: MdLaptop, label: 'Laptops' },
+    { id: 'Desktop', icon: MdDesktopWindows, label: 'Desktops' },
+    { id: 'Accesories', icon: MdMiscellaneousServices, label: 'Accessories' },
+  ];
 
   return (
-    <div className="w-full shadow-sm top-20 pt-4">
-            <Container>
-              <div className="flex flex-row justify-between items-center md:justify-center gap-8 md:gap-12 overflow-x-auto flex-nowrap">
-                <div onClick={() => handleSetCategory("All")}>
-                    <CategoryNavItem icon={MdAllInbox} label={"All"} key={'All'} selected={category === 'All'}/>
-                </div>
-                <div onClick={() => handleSetCategory("Phone")}>
-                    <CategoryNavItem icon={MdPhone} label={"Phone"} key={'Phone'} selected={category === 'Phone'} />
-                </div>
-                <div onClick={() => handleSetCategory("TV")}>
-                    <CategoryNavItem icon={MdTv} label={"TV"} key={'TV'} selected={category === 'TV'}/>
-                </div>
-                <div onClick={() => handleSetCategory("Watch")}>
-                    <CategoryNavItem icon={MdWatch} label={"Watch"} key={'Watch'} selected={category === 'Watch'} />
-                </div>
-                <div onClick={() => handleSetCategory("Laptops")}>
-                    <CategoryNavItem icon={MdLaptop} label={"Laptops"} key={'Laptops'} selected={category === 'Laptops'} />
-                </div>
-                <div onClick={() => handleSetCategory("Desktop")}>
-                    <CategoryNavItem icon={MdDesktopWindows} label={"Desktop"} key={'Desktop'} selected={category === 'Desktop'} />
-                </div>
-                <div onClick={() => handleSetCategory("Accesories")}>
-                    <CategoryNavItem icon={MdMiscellaneousServices} label={"Accesories"} key={'Accesories'} selected={category === 'Accesories'} />
-                </div>
-              </div>
-            </Container>
-        </div>
+    <nav className="
+        w-full
+        border-b border-[hsl(var(--border-subtle))]
+    ">
+        <Container>
+            <div className="
+                flex flex-row 
+                justify-start md:justify-center 
+                items-center 
+                gap-2 md:gap-4 
+                overflow-x-auto 
+                py-3
+                scrollbar-hide
+            ">
+                {categories.map((cat) => (
+                    <button
+                        key={cat.id}
+                        onClick={() => handleSetCategory(cat.id)}
+                        className="
+                            flex-shrink-0
+                            px-3 py-1.5
+                            rounded-[var(--radius-md)]
+                            text-sm
+                            font-medium
+                            transition-all duration-200
+                            whitespace-nowrap
+                            ${category === cat.id
+                                ? 'bg-[hsl(var(--accent))] text-white'
+                                : 'text-[hsl(var(--text-secondary))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--surface-hover))]'
+                            }
+                        "
+                    >
+                        {cat.label}
+                    </button>
+                ))}
+            </div>
+        </Container>
+    </nav>
   );
 };
 

@@ -8,16 +8,38 @@ const CartCount = () => {
 
     const router = useRouter();
     const { cartTotalQty } = useCart()
-    return (
-        <div className = { "relative cursor-pointer hover:scale-105 transition-all duration-300" } onClick = { () => {
-            router.push('/cart')
-        } }>
-            <div className = { "text-3xl text-white" }>
-                <CiShoppingCart/>
-            </div>
-            <span
-                className = { "absolute top-[-10px] right-[-10px] bg-slate-700 text-white h-6 w-6 rounded-full flex items-center justify-center text-sm" }>{ cartTotalQty }</span>
-        </div>
+    
+    return ( 
+        <button 
+            onClick={() => router.push('/cart')}
+            className="
+                relative 
+                p-2
+                rounded-[var(--radius-md)]
+                text-[hsl(var(--text-primary))]
+                hover:bg-[hsl(var(--surface-hover))]
+                transition-all duration-200
+            "
+            aria-label="Shopping cart"
+        >
+            <CiShoppingCart size={24} />
+            {cartTotalQty > 0 && (
+                <span className="
+                    absolute 
+                    top-0 
+                    right-0 
+                    bg-[hsl(var(--accent))] 
+                    text-white 
+                    h-5 w-5 
+                    rounded-full 
+                    flex items-center justify-center 
+                    text-xs 
+                    font-medium
+                ">
+                    {cartTotalQty}
+                </span>
+            )}
+        </button>
     )
 }
 export default CartCount

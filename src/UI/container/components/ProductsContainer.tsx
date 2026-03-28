@@ -20,17 +20,35 @@ const ProductsContainer = () => {
              setProducts(data.filter((prod: Product) => prod.category === category))
            }
          })
-         .catch(err => console.log(err))
+         .catch(() => {})
   }, [category])
 
   return (
     products.length === 0 ? (
-      <div className="flex items-center justify-center p-12 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-lg">
+      <div className="
+        flex items-center justify-center
+        p-12
+        bg-[hsl(var(--surface-elevated))]
+        border border-[hsl(var(--border-subtle))]
+        rounded-[var(--radius-lg)]
+      ">
         <NullData title="No products to display" />
       </div>
     ) : (
-      <div className="p-8 bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 animate-fadeIn">
+      <div className="
+        p-6 md:p-8
+        bg-[hsl(var(--surface))]
+        rounded-[var(--radius-lg)]
+      ">
+        <div className="
+            grid 
+            grid-cols-1 
+            sm:grid-cols-2 
+            md:grid-cols-3 
+            lg:grid-cols-4 
+            xl:grid-cols-5 
+            gap-4 md:gap-6
+        ">
           {products.map(prod => (
             <ProductCard 
               key={prod.id} 

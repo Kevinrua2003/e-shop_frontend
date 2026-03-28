@@ -47,8 +47,7 @@ const Summary = () => {
                 setAmmountSold(sold);
 
             } catch (error) {
-                console.log(error);
-                toast.error(`Error fetching data: ${error}`);
+                toast.error(`Error fetching data`);
             }
         }
         fetchData();
@@ -59,17 +58,25 @@ const Summary = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="max-w-[1150px] m-auto p-6 mt-8 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-2xl border border-gray-200"
+            className="
+                max-w-[1150px] m-auto p-6 mt-8
+                bg-[hsl(var(--surface-elevated))]
+                border border-[hsl(var(--border-subtle))]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-md)]
+            "
         >
-            <div className="mb-6 text-blue-800 text-center">
+            <div className="mb-6 text-center">
                 <Heading title="Dashboard Overview" center/>
-                <p className="text-gray-600 text-sm">A quick glance at key business metrics</p>
+                <p className="text-sm text-[hsl(var(--text-muted))] mt-1">
+                    A quick glance at key business metrics
+                </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <SummaryTarget label={"Total Products"} value={products.length.toString()} />
-                <SummaryTarget label={"Ammount in Store"} value={formatPrice(ammountStored)} />
+                <SummaryTarget label={"Amount in Store"} value={formatPrice(ammountStored)} />
                 <SummaryTarget label={"Products Sold"} value={items.length.toString()} />
-                <SummaryTarget label={"Ammount Sold"} value={formatPrice(ammountSold)} />
+                <SummaryTarget label={"Amount Sold"} value={formatPrice(ammountSold)} />
                 <SummaryTarget label={"Total Orders"} value={orders.length.toString()} />
                 <SummaryTarget label={"Total Users"} value={users.length.toString()} />
             </div>

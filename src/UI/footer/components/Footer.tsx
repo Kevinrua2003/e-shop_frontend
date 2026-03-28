@@ -4,28 +4,63 @@ import { MdFacebook } from "react-icons/md";
 import { AiFillInstagram, AiFillTwitterCircle, AiFillYoutube } from "react-icons/ai";
 
 const Footer = () => {
+    const currentYear = new Date().getFullYear();
+    
     return (
-        <footer className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-10 px-6 rounded-t-2xl shadow-xl">
-            <div className="max-w-6xl mx-auto flex flex-col items-center space-y-8">
-
-                <div className="flex justify-center space-x-6">
+        <footer className="
+            mt-auto
+            bg-[hsl(var(--surface-elevated))]
+            border-t border-[hsl(var(--border-subtle))]
+            py-10 px-6
+        ">
+            <div className="max-w-6xl mx-auto">
+                <div className="flex justify-center gap-6 mb-6">
                     <LinkIcon link={"https://facebook.com"}>
-                        <MdFacebook size={32} className="hover:scale-125 transition-transform duration-300 hover:text-blue-300" />
+                        <MdFacebook 
+                            size={24} 
+                            className="
+                                text-[hsl(var(--text-muted))]
+                                hover:text-[hsl(var(--accent))]
+                                transition-colors duration-200
+                            " 
+                        />
                     </LinkIcon>
                     <LinkIcon link={"https://x.com"}>
-                        <AiFillTwitterCircle size={32} className="hover:scale-125 transition-transform duration-300 hover:text-blue-300" />
+                        <AiFillTwitterCircle 
+                            size={24} 
+                            className="
+                                text-[hsl(var(--text-muted))]
+                                hover:text-[hsl(var(--accent))]
+                                transition-colors duration-200
+                            " 
+                        />
                     </LinkIcon>
                     <LinkIcon link={"https://instagram.com"}>
-                        <AiFillInstagram size={32} className="hover:scale-125 transition-transform duration-300 hover:text-pink-400" />
+                        <AiFillInstagram 
+                            size={24} 
+                            className="
+                                text-[hsl(var(--text-muted))]
+                                hover:text-[hsl(var(--accent))]
+                                transition-colors duration-200
+                            " 
+                        />
                     </LinkIcon>
                     <LinkIcon link={"https://youtube.com"}>
-                        <AiFillYoutube size={32} className="hover:scale-125 transition-transform duration-300 hover:text-red-400" />
+                        <AiFillYoutube 
+                            size={24} 
+                            className="
+                                text-[hsl(var(--text-muted))]
+                                hover:text-[hsl(var(--accent))]
+                                transition-colors duration-200
+                            " 
+                        />
                     </LinkIcon>
                 </div>
-                <div className="w-full border-t border-white/30"></div>
+                
+                <div className="w-full h-px bg-[hsl(var(--border-subtle))] mb-6"></div>
 
-                <p className="text-center text-sm font-medium">
-                    &copy; 2025 <span className="font-bold text-yellow-300">Just Learning</span>. Made with <span className="text-red-400">&hearts;</span>
+                <p className="text-center text-sm text-[hsl(var(--text-muted))]">
+                    &copy; {currentYear} <span className="text-[hsl(var(--text-primary))] font-medium">E-Shop</span>. All rights reserved.
                 </p>
             </div>
         </footer>
