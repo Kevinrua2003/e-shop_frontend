@@ -78,7 +78,7 @@ const Summary = () => {
                 <SummaryTarget label={"Products Sold"} value={items.length.toString()} />
                 <SummaryTarget label={"Amount Sold"} value={formatPrice(ammountSold)} />
                 <SummaryTarget label={"Total Orders"} value={orders.length.toString()} />
-                <SummaryTarget label={"Total Users"} value={users.length.toString()} />
+                <SummaryTarget label={"Total Users"} value={users.length ? users.length.toString() : '0'} />
             </div>
         </motion.div>
     );
