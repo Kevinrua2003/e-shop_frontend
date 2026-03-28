@@ -6,64 +6,74 @@
 @tailwind utilities;
 
 :root {
-  /* Light theme (default) */
-  --background: 0 0% 100%;
-  --foreground: 220 10% 10%;
+  /* Light theme - Ocean Depths */
+  --background: 210 30% 98%;
+  --foreground: 210 25% 15%;
   
-  --surface: 0 0% 98%;
+  --surface: 210 20% 97%;
   --surface-elevated: 0 0% 100%;
-  --surface-hover: 0 0% 96%;
+  --surface-hover: 210 15% 94%;
   
-  --border: 220 5% 85%;
-  --border-subtle: 220 5% 92%;
+  --border: 210 12% 82%;
+  --border-subtle: 210 10% 90%;
   
-  --text-primary: 220 10% 15%;
-  --text-secondary: 220 8% 35%;
-  --text-muted: 220 5% 55%;
+  --text-primary: 210 25% 15%;
+  --text-secondary: 210 15% 35%;
+  --text-muted: 210 10% 50%;
   
-  --accent: 15 80% 55%;
-  --accent-hover: 15 80% 48%;
+  /* Ocean Depths accent - Teal */
+  --accent: 180 55% 35%;
+  --accent-hover: 180 55% 28%;
   
-  --success: 150 60% 40%;
-  --error: 0 70% 50%;
-  --warning: 40 80% 50%;
+  /* Semantic colors */
+  --success: 160 55% 40%;
+  --error: 0 60% 50%;
+  --warning: 40 70% 50%;
   
+  /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
   
+  /* Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
   
+  /* Fonts */
   --font-display: 'Redressed', cursive;
   --font-body: 'Poppins', sans-serif;
   
+  /* Nav height */
   --nav-height: 72px;
 }
 
 .dark {
-  --background: 220 15% 8%;
+  /* Dark theme - Ocean Depths */
+  --background: 210 30% 8%;
   --foreground: 0 0% 95%;
   
-  --surface: 220 15% 10%;
-  --surface-elevated: 220 15% 14%;
-  --surface-hover: 220 15% 16%;
+  --surface: 210 25% 10%;
+  --surface-elevated: 210 20% 14%;
+  --surface-hover: 210 18% 16%;
   
-  --border: 220 10% 22%;
-  --border-subtle: 220 10% 18%;
+  --border: 210 15% 22%;
+  --border-subtle: 210 12% 18%;
   
   --text-primary: 0 0% 92%;
   --text-secondary: 0 0% 70%;
   --text-muted: 0 0% 50%;
   
-  --accent: 15 85% 60%;
-  --accent-hover: 15 85% 52%;
+  /* Ocean Depths accent - brighter teal for dark */
+  --accent: 180 65% 50%;
+  --accent-hover: 180 65% 42%;
   
-  --success: 150 55% 45%;
-  --error: 0 70% 55%;
-  --warning: 40 75% 55%;
+  /* Semantic colors - adjusted for dark */
+  --success: 160 50% 50%;
+  --error: 0 65% 58%;
+  --warning: 40 65% 55%;
   
+  /* Shadows - more visible on dark */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
@@ -171,3 +181,30 @@ body {
 ::selection {
   background-color: hsl(var(--accent) / 0.2);
 }
+
+/* Smooth page transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(9) { animation-delay: 0.45s; }
+.stagger-children > *:nth-child(10) { animation-delay: 0.5s; }

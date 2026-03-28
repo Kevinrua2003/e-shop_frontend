@@ -9,23 +9,14 @@ const SetQuantity : React.FC<SetQuantityProps> = ( {
     handleQuantityDecrease,
 } : SetQuantityProps ) => {
     return (
-        <div className = "flex gap-6 items-center">
+        <div className="flex gap-6 items-center">
             { cartCounter ? null :
-                <div className = "font-medium text-[hsl(var(--text-secondary))]">QUANTITY:</div>
+                <div className="font-medium text-[hsl(var(--text-secondary))]">QUANTITY:</div>
             }
-            <div className = "flex gap-3 items-center">
+            <div className="flex gap-3 items-center">
                 <button 
-                    onClick = { handleQuantityDecrease }
-                    className = "
-                        w-8 h-8 
-                        flex items-center justify-center
-                        border border-[hsl(var(--border))]
-                        rounded-[var(--radius-sm)]
-                        text-[hsl(var(--text-secondary))]
-                        hover:bg-[hsl(var(--surface-hover))]
-                        hover:border-[hsl(var(--text-muted))]
-                        transition-all duration-150
-                    "
+                    onClick={handleQuantityDecrease}
+                    className="w-8 h-8 flex items-center justify-center border border-[hsl(var(--border))] rounded-[var(--radius-sm)] text-[hsl(var(--text-secondary))] hover:bg-[hsl(var(--surface-hover))] hover:border-[hsl(var(--text-muted))] transition-all duration-150"
                 >
                     -
                 </button>
@@ -33,17 +24,8 @@ const SetQuantity : React.FC<SetQuantityProps> = ( {
                     { cartProduct.quantity }
                 </div>
                 <button 
-                    onClick = { handleQuantityIncrease }
-                    className = "
-                        w-8 h-8 
-                        flex items-center justify-center
-                        border border-[hsl(var(--border))]
-                        rounded-[var(--radius-sm)]
-                        text-[hsl(var(--text-secondary))]
-                        hover:bg-[hsl(var(--surface-hover))]
-                        hover:border-[hsl(var(--text-muted))]
-                        transition-all duration-150
-                    "
+                    onClick={handleQuantityIncrease}
+                    className="w-8 h-8 flex items-center justify-center border border-[hsl(var(--border))] rounded-[var(--radius-sm)] text-[hsl(var(--text-secondary))] hover:bg-[hsl(var(--surface-hover))] hover:border-[hsl(var(--text-muted))] transition-all duration-150"
                 >
                     +
                 </button>

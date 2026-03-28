@@ -29,7 +29,8 @@ const LoginForm = () => {
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setIsLoading(true);
-
+        console.log(typeof data.email);
+        
         try {
             await login(data.email, data.password);
         } catch (error) {

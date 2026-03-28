@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useTheme } from '@/providers/theme/components/ThemeProvider'
-import { MdDarkMode, MdLightMode } from 'react-icons/md'
+import { MdDarkMode, MdLightMode, MdWater } from 'react-icons/md'
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme()
@@ -13,8 +13,8 @@ const ThemeToggle = () => {
       className="
         p-2
         rounded-[var(--radius-md)]
-        text-[hsl(var(--text-secondary)]
-        hover:text-[hsl(var(--text-primary)]
+        text-[hsl(var(--text-secondary))]
+        hover:text-[hsl(var(--accent))]
         hover:bg-[hsl(var(--surface-hover))]
         transition-all duration-200
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]
