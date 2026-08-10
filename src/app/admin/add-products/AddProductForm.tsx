@@ -13,11 +13,13 @@ import { AiFillFileAdd } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const AddProductForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isProductCreated, setIsProductCreated] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const {
     register,
@@ -33,7 +35,6 @@ const AddProductForm = () => {
       brand: "",
       category: "",
       inStock: false,
-      image: "",
       price: 0,
     },
   });
@@ -41,6 +42,7 @@ const AddProductForm = () => {
   useEffect(() => {
     if (isProductCreated) {
       reset();
+      setSelectedFile(null);
       setIsProductCreated(false);
     }
   }, [isProductCreated, reset]);
@@ -56,30 +58,45 @@ const AddProductForm = () => {
         return toast.error("Must select a category");
       }
 
-      if (!data.image) {
+      // 1) Crear el producto (la imagen se gestiona por separado).
+      const response = await fetch(`${API_URL}/product`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
         setIsLoading(false);
-        return toast.error("Product must have an image link");
+        return toast.error("Error creating product");
       }
 
-      const response = await fetch(
-        `${API_URL}/product`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+      // 2) Subir la imagen si se eligió un archivo.
+      const created = await response.json();
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+
+        const imageResponse = await fetch(
+          `${API_URL}/product/${created.id}/image`,
+          {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+          }
+        );
+
+        if (!imageResponse.ok) {
+          setIsLoading(false);
+          return toast.error("Product created, but image upload failed");
         }
-      );
-
-      if (response.ok) {
-        toast.success("Product created successfully");
-        setIsProductCreated(true);
-        router.refresh();
-      } else {
-        toast.error("Error creating product");
       }
+
+      toast.success("Product created successfully");
+      setIsProductCreated(true);
+      router.refresh();
     } catch (error) {
       setIsLoading(false);
       return toast.error(`Error creating product: ${error}`);
@@ -98,7 +115,7 @@ const AddProductForm = () => {
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-pink-700 p-6">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -122,7 +139,7 @@ const AddProductForm = () => {
             required
             register={register}
             errors={errors}
-        />
+          />
           <Input
             id="brand"
             label={"Brand"}
@@ -130,7 +147,7 @@ const AddProductForm = () => {
             required
             register={register}
             errors={errors}
-        />
+          />
           <Input
             id="description"
             label={"Description"}
@@ -155,7 +172,9 @@ const AddProductForm = () => {
                 return (
                   <div key={item.label} className="text-blue-900">
                     <CategoryInput
-                      onClick={(category) => setCustomValue("category", category)}
+                      onClick={(category) =>
+                        setCustomValue("category", category)
+                      }
                       label={item.label}
                       selected={category === item.label}
                       icon={item.icon}
@@ -167,16 +186,28 @@ const AddProductForm = () => {
           </div>
           <div className="w-full font-medium items-center justify-center text-center">
             <div className="mb-2 font-semibold text-blue-900">
-              <hr />Image Link Here
+              <hr />Product Image
             </div>
-            <Input
-              id="image"
-              label={"Link"}
+            <input
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp"
               disabled={isLoading}
-              required
-              register={register}
-              errors={errors}
-              />
+              onChange={(e) =>
+                setSelectedFile(e.target.files?.[0] ?? null)
+              }
+              className="block w-full text-sm text-gray-600 file:mr-4 file:rounded-md file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-indigo-700 hover:file:bg-indigo-100"
+            />
+            {selectedFile && (
+              <div className="mt-3">
+                <Image
+                  src={URL.createObjectURL(selectedFile)}
+                  alt="preview"
+                  width={120}
+                  height={120}
+                  className="object-contain mx-auto rounded-md border border-gray-200"
+                />
+              </div>
+            )}
           </div>
           <div className="flex items-center justify-center text-center gap-2">
             <hr />
