@@ -94,6 +94,7 @@ const AddProductForm = () => {
         }
       }
 
+      setIsLoading(false);
       toast.success("Product created successfully");
       setIsProductCreated(true);
       router.refresh();
