@@ -5,6 +5,7 @@ import { Product, Role } from "@/UI/products/types/types"
 import Image from "next/image"
 import { truncate } from "@/utils/functions/truncate"
 import { formatPrice } from "@/utils/functions/formatPrice"
+import { resolveProductImage } from "@/utils/images"
 import { useRouter } from "next/navigation"
 import { useAuth } from '@/app/auth/context/AuthContext'
 
@@ -31,7 +32,7 @@ const ProductCard: React.FC<Product> = (data: Product) => {
       <div className="relative aspect-square overflow-hidden bg-[hsl(var(--surface))]">
         <Image
           alt={data.name}
-          src={data.image}
+          src={resolveProductImage(data.image)}
           fill
           className="
             object-contain

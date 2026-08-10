@@ -6,6 +6,7 @@ import Link from "next/link";
 import { truncate } from "@/utils/functions/truncate";
 import Button from "@/UI/buttons/components/Button";
 import Image from "next/image";
+import { resolveProductImage } from "@/utils/images";
 import SetQuantity from "@/UI/products/components/SetQuantity";
 import { useCart } from "@/hooks/cart/useCart";
 
@@ -24,14 +25,12 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }: ItemContentProps) => 
       <div className="col-span-2 flex justify-self-start gap-3 md:gap-4">
         <Link href={`/product/${item.id}`}>
           <div className="relative w-[70px] aspect-square bg-[hsl(var(--surface))] rounded-[var(--radius-sm)] overflow-hidden">
-            {item.image && (
-              <Image 
-                src={item.image} 
-                alt={item.name} 
-                fill 
-                className="object-contain" 
-              />
-            )}
+            <Image 
+              src={resolveProductImage(item.image)} 
+              alt={item.name} 
+              fill 
+              className="object-contain" 
+            />
           </div>
         </Link>
         <div className="flex flex-col justify-between">

@@ -9,7 +9,7 @@ export interface Product{
     brand : string,
     category : string,
     inStock : boolean,
-    image : string,
+    image : string | null,
 }
 
 export interface Order{
@@ -54,7 +54,7 @@ export type CartProductType = {
     description : string,
     category : string,
     brand : string,
-    image : string,
+    image : string | null,
     quantity : number,
     price : number,
 }

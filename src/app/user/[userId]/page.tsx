@@ -13,6 +13,7 @@ import { formatPrice } from '@/utils/functions/formatPrice';
 import Status from '@/UI/products/components/Status';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
+import { resolveProductImage } from '@/utils/images';
 import { OrderItemRow } from '@/app/admin/edit-order/[orderId]/EditOrderPage';
 
 interface OrderRow {
@@ -190,22 +191,16 @@ function Page() {
                   >
                     <div className="flex flex-col items-center w-[70px]">
                       <div className="relative w-10 h-10">
-                        {product?.image ? (
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            className="object-cover rounded-md border"
-                            sizes="40px"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gray-100 rounded-md border flex items-center justify-center">
-                            <span className="text-xs text-gray-400">N/A</span>
-                          </div>
-                        )}
+                        <Image
+                          src={resolveProductImage(product?.image)}
+                          alt={product?.name ?? 'product'}
+                          fill
+                          className="object-cover rounded-md border"
+                          sizes="40px"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
                       </div>
                     </div>
                   </div>

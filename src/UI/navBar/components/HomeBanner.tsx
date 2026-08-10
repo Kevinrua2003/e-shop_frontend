@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { API_URL } from '@/utils/api'
+import { resolveProductImage } from '@/utils/images'
 import Image from "next/image";
 import { Product } from '@/UI/products/types/types';
 import Link from 'next/link';
@@ -76,7 +77,7 @@ const HomeBanner = () => {
                     ">
                         <div className="relative w-48 h-48 md:w-64 md:h-64">
                             <Image
-                                src={prod.image}
+                                src={resolveProductImage(prod.image)}
                                 alt={prod.name}
                                 fill
                                 className="object-contain"
