@@ -82,6 +82,10 @@ const HomeBanner = () => {
                                 fill
                                 className="object-contain"
                                 sizes="(max-width: 768px) 100vw, 50vw"
+                                onError={(e) => {
+                                    // Si el blob falla, mostrar placeholder.
+                                    e.currentTarget.src = "/product-placeholder.svg";
+                                }}
                             />
                         </div>
                     </div>

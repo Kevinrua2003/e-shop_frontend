@@ -40,6 +40,10 @@ const ProductCard: React.FC<Product> = (data: Product) => {
             group-hover:scale-105
           "
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          onError={(e) => {
+            // Si el blob falla (p. ej. BD perdida en redeploy), mostrar placeholder.
+            e.currentTarget.src = "/product-placeholder.svg";
+          }}
         />
         {!data.inStock && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
