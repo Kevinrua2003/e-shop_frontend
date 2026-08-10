@@ -1,9 +1,10 @@
 'use client'
 import Heading from '@/UI/Headings/components/Heading';
+import { API_URL } from '@/utils/api';
 import NullData from '@/UI/messages/components/NullData';
 import { Order, OrderItem, Product } from '@/UI/products/types/types';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import ActionButton from '@/UI/products/components/ActionButton';
@@ -44,29 +45,42 @@ function Page() {
         }
 
     useEffect(() => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/byUser/${userId}`).then(response => response.json()).then(data => {
+      fetch(`${API_URL}/order/byUser/${userId}`, { credentials: 'include' }).then(response => response.json()).then(data => {
         setUserOrders(data);
+        // Los items vienen incluidos en cada orden (evita /order-item, que es solo admin).
+        setOrderItems(data.flatMap((order: Order) => order.orderItems ?? []));
       }).catch(() => {
         toast.error("Error during fetch");
       });
     }, [userId]);
 
     useEffect(() => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/order-item`)
-        .then(response => response.json())
-        .then(data => setOrderItems(data))
-        .catch(() => toast.error("Error loading order items"));
-    }, []);
-
-    useEffect(() => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`)
+      fetch(`${API_URL}/product`)
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(() => toast.error("Error loading order items"));
     }, []);
 
+  // Lookups O(1) para renderizar los items y productos de cada orden.
+  const productsById = useMemo(() => new Map(products.map((p) => [p.id, p])), [products]);
+  const itemsByOrderId = useMemo(() => {
+    const map = new Map<string, OrderItemRow[]>();
+    for (const item of orderItems) {
+      const list = map.get(item.orderId) ?? [];
+      list.push({
+        id: item.id,
+        orderId: item.orderId,
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+      });
+      map.set(item.orderId, list);
+    }
+    return map;
+  }, [orderItems]);
+
   const handleDelete = useCallback((id: string) => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, { method: 'DELETE' })
+      fetch(`${API_URL}/order/${id}`, { method: 'DELETE', credentials: 'include' })
         .then(() => {
           toast.success("Order deleted successfully");
           router.refresh();
@@ -143,10 +157,9 @@ function Page() {
               </div>
           );
       }},
-      { field: 'products', headerName: "Products overview", width: 500, align: "center", headerAlign: "center" , resizable: false, renderCell: (params) => {
+      { field: 'products', headerName: "Products overview", width: 500, align: "center", headerAlign: "center" , resizable: false,      renderCell: (params) => {
         // Agrupar productos únicos y sumar cantidades
-        const uniqueProducts = orderItems
-          .filter(item => item.orderId === params.row.id)
+        const uniqueProducts = (itemsByOrderId.get(params.row.id) ?? [])
           .reduce((acc, item) => {
             const existing = acc.find(p => p.productId === item.productId);
             if (existing) {
@@ -168,7 +181,7 @@ function Page() {
               'flex-wrap'
             }`}>
               {uniqueProducts.map((item, index) => {
-                const product = products.find(p => p.id === item.productId);
+                const product = productsById.get(item.productId);
                 
                 return (
                   <div 

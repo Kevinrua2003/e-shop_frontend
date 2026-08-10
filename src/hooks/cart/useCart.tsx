@@ -1,4 +1,5 @@
 import React, {createContext, useCallback, useContext, useEffect, useState} from "react";
+import { API_URL } from "@/utils/api";
 import {CartContextProviderProps, CartContextType} from "@/hooks/cart/types/types";
 import {CartItem} from "@/UI/products/types/types";
 import toast from "react-hot-toast";
@@ -6,7 +7,7 @@ import { useAuth } from "@/app/auth/context/AuthContext";
 
 const getProductPrice = async (productId: string): Promise<number> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`);
+    const res = await fetch(`${API_URL}/product/${productId}`);
     const data = await res.json();
     const price = data.price;
     return price;
@@ -143,8 +144,9 @@ export const CartContextProvider = ( props : CartContextProviderProps ) => {
             deliverStatus: 'pending',
           };
       
-          const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
+          const orderRes = await fetch(`${API_URL}/order`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -159,8 +161,9 @@ export const CartContextProvider = ( props : CartContextProviderProps ) => {
               price: product.price,
               quantity: product.quantity,
             };
-            return fetch(`${process.env.NEXT_PUBLIC_API_URL}/order-item`, {
+            return fetch(`${API_URL}/order-item`, {
               method: 'POST',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
               },

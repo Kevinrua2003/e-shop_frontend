@@ -1,5 +1,6 @@
 'use client'
 import Button from '@/UI/buttons/components/Button';
+import { API_URL } from '@/utils/api';
 import Heading from '@/UI/Headings/components/Heading';
 import CategoryInput from '@/UI/inputs/components/CategoryInput';
 import Input from '@/UI/inputs/components/Input';
@@ -45,12 +46,16 @@ function EditProductPage() {
         }, [isProductUpdated, reset]);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`).then(response => response.json()).then(data => {
-            setProd(data);
-        }).catch(err => {
-            console.log(err);            
-        })
-    })
+        // Sin deps este effect se repetiría en cada render (bucle de fetches).
+        fetch(`${API_URL}/product/${productId}`)
+          .then(response => (response.ok ? response.json() : null))
+          .then(data => {
+            if (data) setProd(data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }, [productId])
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {       
        
@@ -68,9 +73,10 @@ function EditProductPage() {
         }
     
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`,
+            `${API_URL}/product/${productId}`,
             {
               method: 'PATCH',
+              credentials: 'include',
               headers: {
                 "Content-Type": "application/json",
               },

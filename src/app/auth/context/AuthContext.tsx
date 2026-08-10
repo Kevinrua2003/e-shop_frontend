@@ -1,5 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { API_URL } from "@/utils/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Role } from "@/UI/products/types/types";
@@ -27,7 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     useEffect(() => {
       const fetchUser = async () => {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/user`, {
+          const res = await fetch(`${API_URL}/auth/user`, {
             method: "GET",
             credentials: "include", 
           });
@@ -56,7 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const login = async (email: string, password: string) => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+            const res = await fetch(`${API_URL}/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -82,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const logout = async () => {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+          const res = await fetch(`${API_URL}/auth/logout`, {
             method: "POST",
             credentials: "include", 
           });

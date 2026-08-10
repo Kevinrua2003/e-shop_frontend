@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { API_URL } from '@/utils/api'
 import Container from "@/UI/container/components/Container";
 import ProductDetails from "@/UI/products/components/ProductDetails";
 import { Product } from '@/UI/products/types/types';
@@ -13,16 +14,18 @@ const ProductPage = ( ) => {
     const [product, setProduct] = useState<Product>()
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`).then(response => response.json()).then(data => {
-            setProduct(data);
-        }).catch(err => {
-            console.log(err);            
-        })
-    })
+        // Sin deps este effect se repetiría en cada render (bucle de fetches).
+        fetch(`${API_URL}/product/${productId}`)
+          .then(response => (response.ok ? response.json() : null))
+          .then(data => {
+            if (data) setProduct(data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }, [productId])
 
-    const productItem = product;
-
-    let prod: Product = {
+    const prod: Product = product ?? {
         id: "",
         name: "",
         brand: "",
@@ -32,18 +35,6 @@ const ProductPage = ( ) => {
         inStock: false,
         price: -1,   
     };
-    if(productItem){
-        prod = {
-            id: productItem.id,
-            name: productItem.name,
-            brand: productItem.brand,
-            category: productItem.category,
-            description: productItem.description,
-            image: productItem.image,
-            inStock: productItem.inStock,
-            price: productItem.price   
-        }
-    }
 
     return (
         <div className = "p-8">

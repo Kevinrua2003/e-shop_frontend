@@ -1,6 +1,7 @@
 'use client';
 
 import {ManageProductsClientProps, Product} from "@/UI/products/types/types";
+import { API_URL } from "@/utils/api";
 import {DataGrid, GridColDef} from "@mui/x-data-grid"
 import Heading from "@/UI/Headings/components/Heading";
 import { MdCached, MdClose, MdDelete, MdDone, MdModeEdit, MdRemoveRedEye } from "react-icons/md";
@@ -25,13 +26,14 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({products}) =
     }
 
     const handleChangeStock = useCallback((id: string) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`)
+        fetch(`${API_URL}/product/${id}`)
           .then(response => response.json())
           .then(product => {
             product.inStock = !product.inStock;
             if (product) {
-              fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`, {
+              fetch(`${API_URL}/product/${id}`, {
                 method: 'PATCH',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product),
               })
@@ -50,8 +52,9 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({products}) =
       }, [router]);
 
     const handleDelete = useCallback((id: string) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`, {
+        fetch(`${API_URL}/product/${id}`, {
           method: 'DELETE',
+          credentials: 'include',
         })
           .then(() => {
             toast.success("Product deleted successfully");

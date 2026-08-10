@@ -1,6 +1,7 @@
 'use client';
 
 import Heading from "@/UI/Headings/components/Heading";
+import { API_URL } from "@/utils/api";
 import Input from "@/UI/inputs/components/Input";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -61,9 +62,10 @@ const AddProductForm = () => {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product`,
+        `${API_URL}/product`,
         {
           method: 'POST',
+          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
           },

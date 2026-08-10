@@ -1,17 +1,14 @@
 "use client";
 import React, { useState } from "react";
+import { API_URL } from "@/utils/api";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { useAuth } from "@/app/auth/context/AuthContext";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { Role } from "@/UI/products/types/types";
-import CustomCheckBox from "@/UI/inputs/components/CustomCheckBox";
 import { useRouter } from "next/navigation";
 import Input from "@/UI/inputs/components/Input";
 import Button from "@/UI/buttons/components/Button";
 
 const RegisterForm = () => {
-  const { user } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -23,21 +20,30 @@ const RegisterForm = () => {
       name: "",
       email: "",
       password: "",
-      role: Role.USER,
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    // Validación previa acorde al backend (CreateUserDto: 8-16 caracteres).
+    if (
+      typeof data.password !== "string" ||
+      data.password.length < 8 ||
+      data.password.length > 16
+    ) {
+      toast.error("Password must be between 8 and 16 characters");
+      return;
+    }
+
     setIsLoading(true);
+    // El backend siempre crea usuarios con rol USER en el registro público.
     const newUser = {
       name: data.name,
       email: data.email,
       hashedPassword: data.password,
-      role: data.role ? "ADMIN" : "USER",
     };
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+        `${API_URL}/auth/register`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -57,7 +63,7 @@ const RegisterForm = () => {
           toast.error(`Error: ${errorData.message || "Unknown error"}`);
         }
       }
-    } catch (err) {
+    } catch {
       toast.error("Network error. Please try again.");
     }
     setIsLoading(false);
@@ -123,9 +129,9 @@ const RegisterForm = () => {
             register={register}
             errors={errors}
           />
-          {user && user.userRole === Role.ADMIN && (
-            <CustomCheckBox id="role" label="ADMIN" register={register} />
-          )}
+          <p className="text-xs text-[hsl(var(--text-muted))] -mt-3">
+            Password must be 8 to 16 characters
+          </p>
           <Button
             label={isLoading ? "Loading..." : "Sign Up"}
             disabled={isLoading}

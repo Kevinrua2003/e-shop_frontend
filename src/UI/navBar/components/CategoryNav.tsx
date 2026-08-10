@@ -1,7 +1,6 @@
 'use client'
 
 import Container from "@/UI/container/components/Container";
-import CategoryNavItem from "./CategoryNavItem";
 import { MdAllInbox, MdDesktopWindows, MdLaptop, MdMiscellaneousServices, MdPhone, MdTv, MdWatch } from "react-icons/md";
 import { useProductsFilter } from "@/hooks/products/useProductsFilter";
 
@@ -37,7 +36,7 @@ const CategoryNav = () => {
                     <button
                         key={cat.id}
                         onClick={() => handleSetCategory(cat.id)}
-                        className="
+                        className={`
                             flex-shrink-0
                             px-3 py-1.5
                             rounded-[var(--radius-md)]
@@ -49,7 +48,7 @@ const CategoryNav = () => {
                                 ? 'bg-[hsl(var(--accent))] text-white'
                                 : 'text-[hsl(var(--text-secondary))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--surface-hover))]'
                             }
-                        "
+                        `}
                     >
                         {cat.label}
                     </button>

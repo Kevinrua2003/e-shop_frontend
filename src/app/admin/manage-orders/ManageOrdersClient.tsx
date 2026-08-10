@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { API_URL } from "@/utils/api";
 import { ManageOrdersClientProps, User } from "@/UI/products/types/types";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { formatPrice } from "@/utils/functions/formatPrice";
@@ -28,17 +29,20 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
     let rows: OrderRow[] = [];
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`)
+        fetch(`${API_URL}/user`, { credentials: 'include' })
             .then(response => response.json())
             .then(data => setUsers(data))
             .catch(err => console.log(err))
     }, []);
 
+    // Lookup O(1) de usuarios por id (evita O(n) por fila).
+    const usersById = useMemo(() => new Map(users.map((u) => [u.id, u])), [users]);
+
     if (orders) {
         rows = orders.map(order => {
             return {
                 id: order.id,
-                customer: users.find(x => x.id === order.userId)?.name || "?",
+                customer: usersById.get(order.userId)?.name || "?",
                 amount: formatPrice(order.amount),
                 paymentStatus: order.status,
                 date: order.createDate.toString(),
@@ -48,7 +52,7 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
     }
 
     const handleChangeStatus = useCallback((id: string) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`)
+        fetch(`${API_URL}/order/${id}`, { credentials: 'include' })
           .then(response => response.json())
           .then(orderData => {
             const order = {
@@ -59,8 +63,9 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
             };
 
             if (order) {
-              fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, {
+              fetch(`${API_URL}/order/${id}`, {
                 method: 'PATCH',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(order),
               })
@@ -79,8 +84,9 @@ const ManageProductsClient: React.FC<ManageOrdersClientProps> = ({ orders }) => 
       }, [router]);
 
     const handleDelete = useCallback((id: string) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, {
+        fetch(`${API_URL}/order/${id}`, {
           method: 'DELETE',
+          credentials: 'include',
         })
           .then(() => {
             toast.success("Order deleted successfully");

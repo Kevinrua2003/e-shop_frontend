@@ -1,5 +1,6 @@
 'use client'
 import NullData from '@/UI/messages/components/NullData';
+import { API_URL } from '@/utils/api';
 import ProductImage from '@/UI/products/components/ProductImage';
 import { Product } from '@/UI/products/types/types';
 import { useParams } from 'next/navigation';
@@ -22,7 +23,7 @@ function ItemViewPage() {
 
     useEffect(() => {
         try {
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${itemId}`).then(response => response.json()).then(data => {
+            fetch(`${API_URL}/product/${itemId}`).then(response => response.json()).then(data => {
                 setProduct(data);
             });            
         } catch (error) {

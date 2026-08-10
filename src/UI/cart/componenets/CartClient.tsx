@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '@/utils/api';
 import { useCart } from "@/hooks/cart/useCart";
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
@@ -14,7 +15,8 @@ import { useRouter } from 'next/navigation';
 
 const getProduct = async (id: string): Promise<CartProductType | null> => {
   try {    
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${id}`);
+    const res = await fetch(`${API_URL}/product/${id}`);
+    if (!res.ok) return null;
     return res.json();
   } catch (error) {
     console.log(error);
@@ -24,29 +26,50 @@ const getProduct = async (id: string): Promise<CartProductType | null> => {
 
 const CartClient = () => {
   const { cartProducts, handleClearCart, handleCheckout, cartTotalAmount } = useCart();
-  const [products, setProducts] = useState<CartProductType[]>([]);
+  // Clave primitiva: solo cambia cuando cambia el CONJUNTO de ids del carrito,
+  // no cuando cambia una cantidad (evita refetches innecesarios).
+  const cartIdsKey = (cartProducts ?? []).map((item) => item.id).sort().join(',');
+  const [productMap, setProductMap] = useState<Record<string, CartProductType>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const {user} = useAuth();
   const router = useRouter()
 
   useEffect(() => {
-    if (cartProducts && cartProducts.length > 0) {
-      setLoading(true);
-      // Para cada producto del carrito, se obtienen los detalles y se combina con la cantidad
-      Promise.all(
-        cartProducts.map(async (item) => {
-          const productDetail = await getProduct(item.id);
-          return productDetail ? { ...productDetail, quantity: item.quantity } : null;
-        })
-      )
-        .then((fetchedProducts) => {
-          // Filtramos los posibles nulos en caso de error
-          setProducts(fetchedProducts.filter((prod) => prod !== null) as CartProductType[]);
-        })
-        .catch(console.error)
-        .finally(() => setLoading(false));
-    }
-  }, [cartProducts]);
+    if (!cartIdsKey) return;
+    let cancelled = false;
+    setLoading(true);
+
+    // Para cada producto del carrito se obtienen los detalles (una sola vez por id).
+    Promise.all(
+      cartIdsKey.split(',').map(async (id) => {
+        const productDetail = await getProduct(id);
+        return productDetail ? { id, productDetail } : null;
+      })
+    )
+      .then((fetched) => {
+        if (cancelled) return;
+        setProductMap(
+          Object.fromEntries(
+            fetched.filter((f) => f !== null).map((f) => [f!.id, f!.productDetail])
+          )
+        );
+      })
+      .catch(console.error)
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cartIdsKey]);
+
+  // Los productos visibles se derivan en render: detalles + cantidad actual del carrito.
+  const products = (cartProducts ?? [])
+    .map((item) =>
+      productMap[item.id] ? { ...productMap[item.id], quantity: item.quantity } : null
+    )
+    .filter((prod): prod is CartProductType => prod !== null);
 
   if (!cartProducts || cartProducts.length === 0) {
     return (

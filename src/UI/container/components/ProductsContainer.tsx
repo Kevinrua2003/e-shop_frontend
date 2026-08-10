@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { API_URL } from '@/utils/api'
 import ProductCard from '@/UI/products/components/ProductCard'
 import { Product } from '@/UI/products/types/types'
 import { useProductsFilter } from '@/hooks/products/useProductsFilter'
@@ -10,21 +11,28 @@ const ProductsContainer = () => {
   const [products, setProducts] = useState<Product[]>([])
   const { category } = useProductsFilter()
 
+  // Una sola petición al catálogo; el filtrado por categoría es local.
+  // Solo se aceptan arrays: un error del backend llega como objeto JSON
+  // (p. ej. {statusCode, message, path}) y rompería el .map().
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`)
-         .then(response => response.json())
-         .then(data => {
-           if (category === "All") {
-             setProducts(data)
-           } else {
-             setProducts(data.filter((prod: Product) => prod.category === category))
-           }
-         })
-         .catch(() => {})
-  }, [category])
+    fetch(`${API_URL}/product`)
+         .then(response => (response.ok ? response.json() : []))
+         .then(data => setProducts(Array.isArray(data) ? data : []))
+         .catch(() => setProducts([]))
+  }, [])
+
+  const visibleProducts = useMemo(
+    () =>
+      Array.isArray(products)
+        ? category === "All"
+          ? products
+          : products.filter((prod) => prod.category === category)
+        : [],
+    [category, products]
+  )
 
   return (
-    products.length === 0 ? (
+    visibleProducts.length === 0 ? (
       <div className="
         flex items-center justify-center
         p-12
@@ -49,7 +57,7 @@ const ProductsContainer = () => {
             xl:grid-cols-5 
             gap-4 md:gap-6
         ">
-          {products.map(prod => (
+          {visibleProducts.map(prod => (
             <ProductCard 
               key={prod.id} 
               id={prod.id} 

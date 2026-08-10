@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useTheme } from '@/providers/theme/components/ThemeProvider'
-import { MdDarkMode, MdLightMode, MdWater } from 'react-icons/md'
+import { MdDarkMode, MdLightMode } from 'react-icons/md'
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme()

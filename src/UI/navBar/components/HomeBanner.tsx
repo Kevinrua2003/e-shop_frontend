@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { API_URL } from '@/utils/api'
 import Image from "next/image";
 import { Product } from '@/UI/products/types/types';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ const HomeBanner = () => {
     const [prod, setProd] = useState<Product | null>(null);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/most/expensive`)
+        fetch(`${API_URL}/product/most/expensive`)
             .then(res => res.json())
             .then(data => setProd(data))
             .catch(() => {}) 

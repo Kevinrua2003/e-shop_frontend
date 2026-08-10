@@ -1,6 +1,7 @@
 'use client'
 
 import SummaryTarget from "@/UI/admin/components/SummaryTarget";
+import { API_URL } from "@/utils/api";
 import Heading from "@/UI/Headings/components/Heading";
 import { Order, OrderItem, Product, User } from "@/UI/products/types/types";
 import { formatPrice } from "@/utils/functions/formatPrice";
@@ -20,10 +21,10 @@ const Summary = () => {
         async function fetchData() {
             try {
                 const [productRes, orderRes, userRes, itemRes] = await Promise.all([
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`).then(res => res.json()),
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`).then(res => res.json()),
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`).then(res => res.json()),
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/order-item`).then(res => res.json()),
+                    fetch(`${API_URL}/product`, { credentials: 'include' }).then(res => res.json()),
+                    fetch(`${API_URL}/order`, { credentials: 'include' }).then(res => res.json()),
+                    fetch(`${API_URL}/user`, { credentials: 'include' }).then(res => res.json()),
+                    fetch(`${API_URL}/order-item`, { credentials: 'include' }).then(res => res.json()),
                 ]);
 
                 setProducts(productRes);
@@ -46,7 +47,7 @@ const Summary = () => {
                 });
                 setAmmountSold(sold);
 
-            } catch (error) {
+            } catch {
                 toast.error(`Error fetching data`);
             }
         }

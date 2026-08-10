@@ -19,6 +19,7 @@ export interface Order{
     status: string,
     deliverStatus: string,
     createDate: Date,
+    orderItems?: OrderItem[],
 }
 
 export interface OrderItem{
@@ -33,7 +34,6 @@ export interface User{
     id : string, 
   name? : string,
   email : string, 
-  hashedPassword : string,
   role : Role,
 }
  export enum Role{
